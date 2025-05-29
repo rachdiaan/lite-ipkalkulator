@@ -181,6 +181,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeBtn.addEventListener('click', () => closeModal(m));
             }
         });
+        
+        tabLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                tabLinks.forEach(l => l.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                link.classList.add('active');
+                const content = document.getElementById(link.dataset.tab);
+                if(content) content.classList.add('active');
+            });
+        });
 
         const feedbackBtn = document.getElementById('get-ai-feedback-btn');
         if (feedbackBtn) {
