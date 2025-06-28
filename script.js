@@ -372,4 +372,3 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         );
     }
-import React, { useState, useEffect, useMemo } from 'react'
