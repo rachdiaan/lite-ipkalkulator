@@ -477,13 +477,17 @@ input:focus, select:focus {
 }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .modal-header h3 { margin: 0; }
-.modal-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); transition: var(--transition-fast); }
-.modal-header button:hover { transform: rotate(90deg); color: var(--error-color); }
+.modal-header .close-modal-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); transition: var(--transition-fast); }
+.modal-header .close-modal-btn:hover { transform: rotate(90deg); color: var(--error-color); }
 .modal-loader { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 0; }
 .modal-response { display: none; }
 .modal-response p { margin-bottom: 0.75rem; }
 .modal-response ul { list-style-position: inside; padding-left: 0.5rem; }
 .modal-response li { margin-bottom: 0.5rem; }
+.modal-response h3 { margin-bottom: 1rem; }
+.modal-response table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.modal-response th, .modal-response td { border: 1px solid var(--border-color); padding: 0.5rem; text-align: left;}
+.modal-response th { background-color: rgba(230, 235, 245, 0.7); }
 
 #planner-modal-body .planner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .planner-btn {

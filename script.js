@@ -181,10 +181,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(errorData.error.message || `API Error: ${response.statusText}`);
             }
             const result = await response.json();
-            responseDiv.innerHTML = result.candidates[0].content.parts[0].text;
+            if(result.candidates && result.candidates.length > 0){
+                responseDiv.innerHTML = result.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error("Respon dari AI tidak valid atau kosong.");
+            }
         } catch (error) {
             console.error("AI Feedback Error:", error);
-            responseDiv.innerHTML = `<p style="color:var(--error-color)"><strong>Gagal Terhubung ke AI.</strong></p><p style="font-size:0.8rem; color:var(--text-color-light)">Ini bisa terjadi jika Anda menjalankan file ini secara langsung di browser. Coba jalankan melalui server lokal. Jika masalah berlanjut, mungkin ada kendala pada layanan AI.</p>`;
+            responseDiv.innerHTML = `<p style="color:var(--error-color)"><strong>Gagal Terhubung ke AI.</strong></p><p style="font-size:0.8rem; color:var(--text-color-light)">Ini bisa terjadi jika Anda menjalankan file ini secara langsung di browser (dari folder lokal). Coba jalankan aplikasi melalui server lokal. Jika masalah berlanjut, mungkin ada kendala pada layanan AI.</p>`;
         } finally {
             loader.style.display = 'none';
             responseDiv.style.display = 'block';
@@ -244,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('open-planner-modal-btn').addEventListener('click', () => {
         plannerModal.querySelector('.planner-options').style.display = 'grid';
+        plannerModal.querySelector('.modal-response').innerHTML = '';
         plannerModal.querySelector('.modal-response').style.display = 'none';
         openModal(plannerModal);
     });
