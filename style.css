@@ -57,7 +57,7 @@ body.loading .main-container > * {
 .background-shapes::before {
     width: 350px;
     height: 350px;
-    background: #ffafbd;
+    background: #ffdde1;
     top: -100px;
     left: -150px;
     animation: move-one 20s infinite alternate ease-in-out;
@@ -240,6 +240,10 @@ input:focus, select:focus {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.95); }
 }
 
 .course-card-header-item {
@@ -441,7 +445,7 @@ input:focus, select:focus {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none;
+    display: none; 
     align-items: center;
     justify-content: center;
     z-index: 1000;
