@@ -1,16 +1,18 @@
 /* --- General Setup & Theming --- */
 :root {
-    --bg-color: #f4f7fc;
-    --card-bg-color: rgba(255, 255, 255, 0.4);
-    --border-color: rgba(255, 255, 255, 0.6);
-    --shadow-color: rgba(0, 0, 0, 0.08);
-    --text-color-dark: #2c3e50;
-    --text-color-light: #576a82;
+    --bg-color: #f0f2f5;
+    --card-bg-color: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.7);
+    --shadow-color: rgba(90, 110, 140, 0.1);
+    --text-color-dark: #1c2028;
+    --text-color-light: #5a677d;
     --accent-color: #B6252A;
     --accent-color-bright: #ED1E28;
     --success-color: #27ae60;
-    --error-color: #c0392b;
+    --error-color: #e74c3c;
     --font-family: 'Poppins', sans-serif;
+    --transition-fast: all 0.2s ease-in-out;
+    --transition-medium: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 * {
@@ -26,6 +28,11 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
+body.loading .main-container > * {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
 
 /* --- Animated Background --- */
 .background-shapes {
@@ -42,34 +49,35 @@ body {
     content: '';
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.3;
+    filter: blur(100px);
+    opacity: 0.15;
+    transition: var(--transition-medium);
 }
 
 .background-shapes::before {
     width: 350px;
     height: 350px;
-    background: #ffafbd;
-    top: -50px;
-    left: -80px;
-    animation: move-one 15s infinite alternate ease-in-out;
+    background: #ffdde1;
+    top: -100px;
+    left: -150px;
+    animation: move-one 20s infinite alternate ease-in-out;
 }
 
 .background-shapes::after {
     width: 450px;
     height: 450px;
-    background: #B6252A;
-    bottom: -80px;
-    right: -100px;
-    animation: move-two 18s infinite alternate ease-in-out;
+    background: #ee9ca7;
+    bottom: -150px;
+    right: -200px;
+    animation: move-two 25s infinite alternate ease-in-out;
 }
 
 @keyframes move-one {
-    to { transform: translate(100px, 80px) scale(1.2); }
+    to { transform: translate(150px, 100px) scale(1.3) rotate(90deg); }
 }
 
 @keyframes move-two {
-    to { transform: translate(-120px, -60px) scale(0.8); }
+    to { transform: translate(-180px, -90px) scale(0.7) rotate(-90deg); }
 }
 
 
@@ -79,6 +87,11 @@ body {
     margin: 2rem auto;
     padding: 0 2rem;
 }
+.main-container > * {
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.app-header { transition-delay: 0.1s; }
+.content-grid { transition-delay: 0.2s; }
 
 .app-header {
     display: flex;
@@ -111,13 +124,18 @@ body {
 
 /* --- Glassmorphism Card Style --- */
 .glass-card {
-    background: var(--card-bg-color);
-    border-radius: 20px;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 32px 0 var(--shadow-color);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    padding: 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px 0 var(--shadow-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: var(--transition-medium);
+}
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px 0 rgba(90, 110, 140, 0.15);
 }
 
 .glass-card h2, .glass-card h3 {
@@ -128,14 +146,14 @@ body {
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 label {
     display: block;
     font-size: 0.8rem;
     font-weight: 500;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
     color: var(--text-color-light);
 }
 
@@ -144,20 +162,22 @@ input[type="text"], input[type="number"], select {
     padding: 0.75rem;
     border-radius: 10px;
     border: 1px solid transparent;
-    background-color: rgba(230, 235, 245, 0.7);
+    background-color: rgba(240, 242, 245, 0.8);
     color: var(--text-color-dark);
     font-family: var(--font-family);
-    transition: all 0.2s ease;
+    transition: var(--transition-fast);
 }
 
 input:focus, select:focus {
     outline: none;
     border-color: var(--accent-color);
     box-shadow: 0 0 0 3px rgba(182, 37, 42, 0.2);
+    background-color: white;
 }
 
 .validation-message {
     font-size: 0.75rem;
+    font-weight: 500;
     margin-top: 0.25rem;
     min-height: 1rem;
 }
@@ -191,7 +211,7 @@ input:focus, select:focus {
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: var(--transition-fast);
 }
 .action-btn:hover {
     background-color: rgba(0,0,0,0.1);
@@ -202,54 +222,69 @@ input:focus, select:focus {
 
 .courses-list {
     display: grid;
-    grid-template-columns: 1fr; /* Default to 1 column */
-    gap: 1.25rem; /* Increased spacing */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
 }
-
-/* Apply 2-column layout on medium screens and up */
-@media (min-width: 768px) {
-    .courses-list {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
 
 .course-card-item {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    background-color: rgba(230, 235, 245, 0.7);
+    background-color: rgba(240, 242, 245, 0.8);
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 16px;
     position: relative;
     animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.course-card-item .course-name { width: calc(100% - 30px); }
-.course-card-item .course-details { display: flex; gap: 0.75rem; }
-.course-card-item input, .course-card-item select { padding: 0.5rem; }
+.course-card-header-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.course-name {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex-grow: 1;
+}
+.course-details {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0.75rem;
+}
+
+.course-sks, .course-grade {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+}
+
 .remove-course-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--text-color-light);
     font-size: 1.2rem;
-    transition: all 0.2s;
+    transition: var(--transition-fast);
     width: 28px;
     height: 28px;
     line-height: 28px;
     text-align: center;
     border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
 }
-.remove-course-btn:hover { color: white; background-color: var(--error-color); }
+.remove-course-btn:hover { color: white; background-color: var(--error-color); transform: rotate(90deg) scale(1.1); }
+
 .add-course-btn {
     display: flex;
     align-items: center;
@@ -264,7 +299,7 @@ input:focus, select:focus {
     color: var(--accent-color);
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: var(--transition-fast);
 }
 .add-course-btn:hover { background-color: rgba(182, 37, 42, 0.1); }
 
@@ -306,10 +341,10 @@ input:focus, select:focus {
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: var(--transition-medium);
     box-shadow: 0 4px 15px rgba(182, 37, 42, 0.3);
 }
-.ai-feedback-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(182, 37, 42, 0.4); }
+.ai-feedback-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(182, 37, 42, 0.4); }
 
 /* --- Info Tabs --- */
 .tab-header {
@@ -325,7 +360,7 @@ input:focus, select:focus {
     color: var(--text-color-light);
     font-weight: 500;
     position: relative;
-    transition: color 0.2s;
+    transition: var(--transition-fast);
 }
 .tab-link.active { color: var(--accent-color); }
 .tab-link.active::after {
@@ -336,9 +371,12 @@ input:focus, select:focus {
     width: 100%;
     height: 2px;
     background-color: var(--accent-color);
+    transition: var(--transition-medium);
 }
 .tab-content { display: none; }
-.tab-content.active { display: block; }
+.tab-content.active { display: block; animation: tab-fade-in 0.5s ease; }
+@keyframes tab-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
 .conversion-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
@@ -352,10 +390,15 @@ input:focus, select:focus {
 .predicate-table table { width: 100%; font-size: 0.8rem; }
 
 /* --- Modal --- */
-.modal-overlay { display: none; }
+.modal-overlay { display: none; animation: modal-bg-fade-in 0.3s ease; }
+.modal-overlay.active { display: flex; }
+@keyframes modal-bg-fade-in { from { background-color: rgba(0,0,0,0); } to { background-color: rgba(0,0,0,0.5); } }
+.modal-content { animation: modal-scale-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes modal-scale-in { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .modal-header h3 { margin: 0; }
-.modal-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); }
+.modal-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); transition: var(--transition-fast); }
+.modal-header button:hover { transform: rotate(90deg); color: var(--error-color); }
 .modal-loader { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 0; }
 #modal-response { display: none; }
 #modal-response p { margin-bottom: 0.75rem; }
@@ -372,13 +415,14 @@ input:focus, select:focus {
 
 /* --- Responsive Design --- */
 @media (max-width: 1024px) {
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-    .sidebar-section {
-        position: static;
-    }
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar-section { position: static; }
 }
+
+@media (min-width: 768px) {
+    .courses-list { grid-template-columns: 1fr 1fr; }
+}
+
 
 @media (max-width: 640px) {
     .main-container { padding: 0 1rem; margin: 1rem auto; }

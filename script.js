@@ -86,8 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const row = document.createElement('div');
         row.className = 'course-card-item';
         row.innerHTML = `
-            <button class="remove-course-btn">&times;</button>
-            <input type="text" class="course-name" placeholder="Nama Mata Kuliah" value="${course.name}">
+            <div class="course-card-header-item">
+                <input type="text" class="course-name" placeholder="Nama Mata Kuliah" value="${course.name}">
+                <button class="remove-course-btn">&times;</button>
+            </div>
             <div class="course-details">
                 <input type="number" class="course-sks" min="1" max="6" placeholder="SKS" value="${course.sks}">
                 <select class="course-grade">
@@ -103,8 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         row.querySelector('.remove-course-btn').addEventListener('click', () => {
-            row.remove();
-            calculateGPA();
+            row.style.animation = 'fadeOut 0.3s ease-out forwards';
+            row.addEventListener('animationend', () => {
+                 row.remove();
+                 calculateGPA();
+            });
         });
         return row;
     };
@@ -177,8 +182,8 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     // --- AI Modal Functions ---
-    const openModal = () => { modal.style.display = 'flex'; }
-    const closeModal = () => { modal.style.display = 'none'; }
+    const openModal = () => { modal.classList.add('active'); }
+    const closeModal = () => { modal.classList.remove('active'); }
 
     const getAIFeedback = async () => {
         openModal();
@@ -234,15 +239,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     englishScoreInput.addEventListener('input', checkEnglishScore);
     
-    // New Listeners for Upload/Download
     downloadTemplateBtn.addEventListener('click', downloadTemplate);
     uploadSpreadsheetInput.addEventListener('change', handleFileUpload);
     
-    // AI Modal Listeners
     getAIFeedbackBtn.addEventListener('click', getAIFeedback);
     closeModalBtn.addEventListener('click', closeModal);
     
-    // Tabs Listeners
     tabLinks.forEach(link => {
         link.addEventListener('click', () => {
             tabLinks.forEach(l => l.classList.remove('active'));
@@ -252,11 +254,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- Initial Setup ---
+    // --- Initial Setup & Load Animation ---
+    window.addEventListener('load', () => {
+        document.body.classList.remove('loading');
+    });
+
     if (initialCourses.length > 0) {
         initialCourses.forEach(course => coursesList.appendChild(createCourseRow(course)));
     } else {
-        addCourse(); // Start with one empty row
+        addCourse();
     }
     
     document.querySelector('.predicate-table').style.display = 'block';
