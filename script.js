@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prompt = `Anda adalah seorang konselor akademik yang positif dan memotivasi di Telkom University. Seorang mahasiswa meminta umpan balik tentang performa akademiknya.\n\nData Mahasiswa:\nNama: ${studentName || "Mahasiswa"}\nNIM: ${studentNIM || "Tidak ada"}\nIPK saat ini: ${gpa}\nMata Kuliah yang telah dinilai:\n${coursesData.join('\n')}\n\nTugas Anda:\n1. Sapa mahasiswa dengan namanya jika tersedia. Berikan paragraf pembuka yang singkat, positif, dan memotivasi berdasarkan IPK mereka.\n2. Berikan 3-4 poin saran belajar yang spesifik dan praktis dalam format daftar (list).\n3. Berikan paragraf penutup yang memberi semangat.\n\nJawab dalam format HTML sederhana (gunakan <p>, <ul>, dan <li>) dan dalam Bahasa Indonesia.`;
         
         try {
-            const apiKey = ""; // API key is handled by the browser environment
+            const apiKey = "AIzaSyBiscBG-1BjePTdZ6NskfWvg7OcpHPBsqs"; // API key is handled by the browser environment
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
