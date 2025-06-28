@@ -149,6 +149,27 @@ body.loading .main-container > * {
     gap: 1.25rem;
 }
 
+.s2-planner-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-items: flex-end;
+}
+.s2-semester-selector { grid-column: 1 / 2; }
+.s2-fill-btn {
+    grid-column: 2 / 3;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+.s2-fill-btn:hover { background-color: var(--accent-color-bright); }
+
+
 label {
     display: block;
     font-size: 0.8rem;
@@ -353,6 +374,7 @@ input:focus, select:focus {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
+    font-size: 0.8rem;
 }
 .ai-feedback-btn { background: linear-gradient(45deg, var(--accent-color), var(--accent-color-bright)); }
 .ai-planner-btn { background: linear-gradient(45deg, var(--text-color-dark), #34495e); }
@@ -397,6 +419,7 @@ input:focus, select:focus {
     font-weight: 500;
     position: relative;
     transition: var(--transition-fast);
+    font-size: 0.9rem;
 }
 .tab-link.active { color: var(--accent-color); }
 .tab-link.active::after {
@@ -423,13 +446,13 @@ input:focus, select:focus {
 .conversion-grid p { font-weight: 600; }
 .conversion-grid span { font-size: 0.75rem; color: var(--text-color-light); }
 
-.predicate-table h4 { font-weight: 600; margin-bottom: 0.75rem; }
-.predicate-grid {
+.predicate-table h4, .info-table-container h4 { font-weight: 600; margin-bottom: 0.75rem; }
+.predicate-grid, .info-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.5rem;
 }
-.predicate-item {
+.predicate-item, .info-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -438,11 +461,11 @@ input:focus, select:focus {
     border-radius: 8px;
     font-size: 0.8rem;
 }
-.predicate-name {
+.predicate-name, .info-name {
     font-weight: 500;
     color: var(--text-color-dark);
 }
-.predicate-ipk {
+.predicate-ipk, .info-value {
     font-weight: 500;
     color: var(--text-color-light);
 }
@@ -525,6 +548,8 @@ input:focus, select:focus {
     .main-container { padding: 0 1rem; margin: 1rem auto; }
     .app-header { flex-direction: column; text-align: center; gap: 1rem; }
     .form-grid { grid-template-columns: 1fr; }
+    .s2-planner-grid { grid-template-columns: 1fr; }
+    .s2-fill-btn { grid-column: auto; }
     .courses-list { grid-template-columns: 1fr; }
     .result-actions { grid-template-columns: 1fr; }
     #planner-modal-body .planner-options { grid-template-columns: 1fr; }

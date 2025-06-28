@@ -1,10 +1,61 @@
 document.addEventListener('DOMContentLoaded', function() {
     // --- Initial Data & Constants ---
     const gradePoints = { 'A': 4.0, 'AB': 3.5, 'B': 3.0, 'BC': 2.5, 'C': 2.0, 'D': 1.0, 'E': 0.0 };
-    const initialCourses = [];
     const minEnglishScoresForGraduation = { s1: 450, s2: 475, s3: 500 };
+    const s2Curriculum = {
+        manajemen: {
+            'Kelas Reguler': { 'Semester 1': [ { name: 'Financial Management and Technology', sks: 3 }, { name: 'Human Capital Management', sks: 3 }, { name: 'Marketing Management in Digital Era', sks: 3 }, { name: 'Managing Seamless Operation', sks: 3 }, { name: 'Data Science in Decision Intelligence', sks: 4 }, { name: 'Etika Bisnis', sks: 2 } ], 'Semester 2': [ { name: 'Manajemen Strategi & Ekosistem Bisnis', sks: 4 }, { name: 'Design Thinking for Business', sks: 4 }, { name: 'Mata Kuliah Pilihan Wajib', sks: 4 }, { name: 'Research Method', sks: 3 }, { name: 'Sertifikasi', sks: 1 }, { name: 'Seminar', sks: 2 } ], 'Semester 3': [ { name: 'Mata Kuliah Pilihan 1', sks: 4 }, { name: 'Mata Kuliah Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 1', sks: 8 }, { name: 'Tugas Akhir 2', sks: 2 } ] },
+            'Kelas Profesional dan Eksekutif': { 'Semester 1': [ { name: 'Financial Management and Technology', sks: 3 }, { name: 'Human Capital Management', sks: 3 }, { name: 'Marketing Management in Digital Era', sks: 3 }, { name: 'Managing Seamless Operation', sks: 3 }, { name: 'Data Science in Decision Intelligence', sks: 4 } ], 'Semester 2': [ { name: 'Manajemen Strategi & Ekosistem Bisnis', sks: 4 }, { name: 'Design Thinking for Business', sks: 4 }, { name: 'Etika Bisnis', sks: 2 }, { name: 'Mata Kuliah Pilihan Wajib', sks: 4 }, { name: 'Sertifikasi', sks: 1 } ], 'Semester 3': [ { name: 'Mata Kuliah Pilihan 1', sks: 4 }, { name: 'Mata Kuliah Pilihan 2', sks: 4 }, { name: 'Research Method', sks: 3 }, { name: 'Seminar', sks: 2 } ], 'Semester 4': [ { name: 'Tugas Akhir 1', sks: 8 }, { name: 'Tugas Akhir 2', sks: 2 } ] },
+            'By Research': { 'Semester 1': [ { name: 'Financial Management and Technology', sks: 3 }, { name: 'Human Capital Management', sks: 3 }, { name: 'Marketing Management in Digital Era', sks: 3 }, { name: 'Managing Seamless Operation', sks: 3 }, { name: 'Data Science in Decision Intelligence', sks: 4 } ], 'Semester 2': [ { name: 'Manajemen Strategi & Ekosistem Bisnis', sks: 4 }, { name: 'Preliminary Study', sks: 4 }, { name: 'Study Literature', sks: 4 }, { name: 'Laporan Progres/Publikasi 1-Jurnal Scopus Q3', sks: 3 } ], 'Semester 3': [ { name: 'Research Design', sks: 4 }, { name: 'Pengumpulan Data', sks: 3 }, { name: 'Analisis Data', sks: 3 }, { name: 'Seminar Hasil', sks: 3 } ], 'Semester 4': [ { name: 'Tugas Akhir 1', sks: 8 }, { name: 'Tugas Akhir 2', sks: 2 } ] }
+        },
+        elektro: {
+            'IWCSS': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Enginenering', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Advanced Wireless Communications', sks: 3 }, { name: 'Classical and Quantum Information Theory', sks: 3 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Artificial Intelligence for Wireless Communication', sks: 3 }, { name: 'Advanced Digital Signal Processing and Applications', sks: 3 }, { name: 'Elective Course 1 (Major)', sks: 3 }, { name: 'Elective Course 2 (Major)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis Proposal', sks: 3 }, { name: 'Thesis 1: Publication', sks: 5 }, { name: 'Advanced Satellite Systems', sks: 3 }, { name: 'Elective Course 3 (Major/Minor)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Elective Course 4 (Major/Minor)', sks: 3 } ] },
+            'NECS': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Engineering', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Data Network & Protocols', sks: 3 }, { name: 'Internet of Things and Edge Computing', sks: 3 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Advanced Network Security', sks: 3 }, { name: 'Network Mathematics', sks: 3 }, { name: 'Elective Course 1 (Major)', sks: 3 }, { name: 'Elective Course 2 (Major)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis Proposal', sks: 3 }, { name: 'Thesis 1: Publication', sks: 5 }, { name: 'Management and Audit of Cyber Security', sks: 3 }, { name: 'Elective Course 3 (Major/Minor)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Elective Course 4 (Major/Minor)', sks: 3 } ] },
+            'RMT': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Engineering', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Digital Telecommunication Policy and Regulation', sks: 3 }, { name: 'Telecommunication System and Network Planning', sks: 3 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Digital Business and Telecommunication Project Management', sks: 3 }, { name: 'Management and Audit of Cyber Security', sks: 3 }, { name: 'Elective Course 1 (Major)', sks: 3 }, { name: 'Elective Course 2 (Major)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis Proposal', sks: 3 }, { name: 'Thesis 1: Publication', sks: 5 }, { name: 'Management of Technology and Innovation', sks: 3 }, { name: 'Elective Course 3 (Major)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Elective Course 4 (Major)', sks: 3 } ] },
+            'CIS': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Engineering', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Modeling and Simulation of Control System', sks: 3 }, { name: 'Intelligence Internet of Things', sks: 3 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Advanced Embedded System', sks: 3 }, { name: 'Advanced Robotics', sks: 3 }, { name: 'Elective Course 1 (Major)', sks: 3 }, { name: 'Elective Course 2 (Major)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis Proposal', sks: 3 }, { name: 'Thesis 1: Publication', sks: 5 }, { name: 'Advanced Machine Learning', sks: 3 }, { name: 'Elective Course 3 (Major)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Elective Course 4 (Major)', sks: 3 } ] },
+            'SES': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Engineering', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Operation and Control of Energy System', sks: 3 }, { name: 'Sustainable Energy Planning', sks: 3 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Energy Regulation and Economics', sks: 3 }, { name: 'Advanced Power Electronics', sks: 3 }, { name: 'Elective Course 1 (Major)', sks: 3 }, { name: 'Elective Course 2 (Major)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis Proposal', sks: 3 }, { name: 'Thesis 1: Publication', sks: 5 }, { name: 'Grid Modernization', sks: 3 }, { name: 'Elective Course 3 (Major)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Elective Course 4 (Major)', sks: 3 } ] },
+            'By Research': { 'Semester 1': [ { name: 'Advanced Engineering Mathematics', sks: 3 }, { name: 'Deep Learning for Electrical Engineering', sks: 3 }, { name: 'Research Philosophy and Ethics', sks: 3 }, { name: 'Entrepreneurship for Engineers', sks: 3 }, { name: 'Research Topics 1', sks: 5 } ], 'Semester 2': [ { name: 'Research Design', sks: 3 }, { name: 'Thesis Proposal', sks: 3 }, { name: 'Research Topics 2', sks: 5 }, { name: 'Elective Course 1 (Major/Minor)', sks: 3 }, { name: 'Elective Course 2 (Major/Minor)', sks: 3 } ], 'Semester 3': [ { name: 'Thesis 1', sks: 5 }, { name: 'Research Topics 3', sks: 5 }, { name: 'Elective Course 3 (Major/Minor)', sks: 3 } ], 'Semester 4': [ { name: 'Thesis 2', sks: 5 }, { name: 'Research Topics 4', sks: 5 } ] }
+        },
+        informatika: {
+            'Data Science': { 'Semester 1': [ { name: 'Metodologi Riset', sks: 3 }, { name: 'Desain Algoritma Lanjut', sks: 4 }, { name: 'Prinsip Sains Data', sks: 3 }, { name: 'Pemodelan dan Optimasi Lanjut', sks: 4 } ], 'Semester 2': [ { name: 'Kecerdasan Buatan Lanjut', sks: 4 }, { name: 'Proposal Tesis', sks: 3 }, { name: 'Pemodelan Statistik untuk Sains Data', sks: 4 }, { name: 'Analitik Big Data Lanjut', sks: 4 } ], 'Semester 3': [ { name: 'Bisnis Digital', sks: 3 }, { name: 'Penulisan Akademik dan Presentasi', sks: 4 }, { name: 'Tugas Akhir 1', sks: 4 }, { name: 'Pilihan 1', sks: 4 } ], 'Semester 4': [ { name: 'Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 2', sks: 6 } ] },
+            'Socio Informatics': { 'Semester 1': [ { name: 'Metodologi Riset', sks: 3 }, { name: 'Desain Algoritma Lanjut', sks: 4 }, { name: 'Pengenalan sosio Informatika dan Etika', sks: 3 }, { name: 'Pemodelan dan Optimasi Lanjut', sks: 4 } ], 'Semester 2': [ { name: 'Kecerdasan Buatan Lanjut', sks: 4 }, { name: 'Proposal Tesis', sks: 3 }, { name: 'Ilmu Jejaring', sks: 4 }, { name: 'Representasi dan Penalaran Pengetahuan', sks: 4 } ], 'Semester 3': [ { name: 'Bisnis Digital', sks: 3 }, { name: 'Penulisan Akademik dan Presentasi', sks: 4 }, { name: 'Tugas Akhir 1', sks: 4 }, { name: 'Pilihan 1', sks: 4 } ], 'Semester 4': [ { name: 'Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 2', sks: 6 } ] },
+            'Computing Infrastructure and Services': { 'Semester 1': [ { name: 'Metodologi Riset', sks: 3 }, { name: 'Desain Algoritma Lanjut', sks: 4 }, { name: 'Pengenalan Infrastruktur dan Layanan Komputasi', sks: 3 }, { name: 'Pemodelan dan Optimasi Lanjut', sks: 4 } ], 'Semester 2': [ { name: 'Kecerdasan Buatan Lanjut', sks: 4 }, { name: 'Proposal Tesis', sks: 3 }, { name: 'Internet of Things Lanjut', sks: 4 }, { name: 'Komputasi Awan Lanjut', sks: 4 } ], 'Semester 3': [ { name: 'Bisnis Digital', sks: 3 }, { name: 'Penulisan Akademik dan Presentasi', sks: 4 }, { name: 'Tugas Akhir 1', sks: 4 }, { name: 'Pilihan 1', sks: 4 } ], 'Semester 4': [ { name: 'Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 2', sks: 6 } ] },
+            'Computer Vision': { 'Semester 1': [ { name: 'Metodologi Riset', sks: 3 }, { name: 'Desain Algoritma Lanjut', sks: 4 }, { name: 'Tren pada Visi Komputer', sks: 3 }, { name: 'Pemodelan dan Optimasi Lanjut', sks: 4 } ], 'Semester 2': [ { name: 'Kecerdasan Buatan Lanjut', sks: 4 }, { name: 'Proposal Tesis', sks: 3 }, { name: 'Pengolahan Citra Digital Lanjut', sks: 4 }, { name: 'Visi Komputer Fundamental', sks: 4 } ], 'Semester 3': [ { name: 'Bisnis Digital', sks: 3 }, { name: 'Penulisan Akademik dan Presentasi', sks: 4 }, { name: 'Tugas Akhir 1', sks: 4 }, { name: 'Pilihan 1', sks: 4 } ], 'Semester 4': [ { name: 'Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 2', sks: 6 } ] },
+            'Software Engineering': { 'Semester 1': [ { name: 'Metodologi Riset', sks: 3 }, { name: 'Desain Algoritma Lanjut', sks: 4 }, { name: 'Tren pada Rekayasa Perangkat Lunak', sks: 3 }, { name: 'Pemodelan dan Optimasi Lanjut', sks: 4 } ], 'Semester 2': [ { name: 'Kecerdasan Buatan Lanjut', sks: 4 }, { name: 'Proposal Tesis', sks: 3 }, { name: 'Rekayasa Perangkat Lunak Lanjut', sks: 4 }, { name: 'Rekayasa Perangkat Lunak Perusahaan', sks: 4 } ], 'Semester 3': [ { name: 'Bisnis Digital', sks: 3 }, { name: 'Penulisan Akademik dan Presentasi', sks: 4 }, { name: 'Tugas Akhir 1', sks: 4 }, { name: 'Pilihan 1', sks: 4 } ], 'Semester 4': [ { name: 'Pilihan 2', sks: 4 }, { name: 'Tugas Akhir 2', sks: 6 } ] }
+        },
+        cybersecurity: {
+            'Research Based': { 'Semester 1': [ { name: 'Prinsip Dasar Keamanan', sks: 4 }, { name: 'Kerentanan Arsitektur Sistem Komputer dan Jaringan', sks: 3 }, { name: 'Kerangka Kerja Forensik Digital', sks: 3 }, { name: 'Sekuritas dan Privasi untuk Pengguna Teknologi Informasi', sks: 3 }, { name: 'Proyek pada Akademik', sks: 3 }, { name: 'Metodologi Riset', sks: 3 } ], 'Semester 2': [ { name: 'MK Lanjutan 1', sks: 3 }, { name: 'MK Lanjutan 2', sks: 3 }, { name: 'MK Pendukung 1', sks: 3 }, { name: 'MK Pendukung 2', sks: 3 }, { name: 'Implementasi Proyek 1', sks: 4 } ], 'Semester 3': [ { name: 'Implementasi Proyek 2', sks: 4 }, { name: 'Keamanan Siber dan Forensik Digital pada Era Bisnis Digital', sks: 3 }, { name: 'Penulisan Tesis/ Publikasi / Dokumen Prototipe', sks: 3 }, { name: 'Proyek pada Industri', sks: 3 } ], 'Semester 4': [ { name: 'Thesis', sks: 6 } ] },
+            'Course Based': { 'Semester 1': [ { name: 'Prinsip Dasar Keamanan', sks: 4 }, { name: 'Kerentanan Arsitektur Sistem Komputer dan Jaringan', sks: 3 }, { name: 'Kerangka Kerja Forensik Digital', sks: 3 }, { name: 'Sekuritas dan Privasi untuk Pengguna Teknologi Informasi', sks: 3 }, { name: 'Proyek pada Akademik', sks: 3 }, { name: 'Metodologi Riset', sks: 3 } ], 'Semester 2': [ { name: 'MK Wajib Peminatan 1', sks: 3 }, { name: 'MK Wajib Peminatan 2', sks: 3 }, { name: 'MK Pendukung 1', sks: 3 }, { name: 'MK Pendukung 2', sks: 3 }, { name: 'Implementasi Proyek 1', sks: 4 } ], 'Semester 3': [ { name: 'Implementasi Proyek 2', sks: 4 }, { name: 'Keamanan Siber dan Forensik Digital pada Era Bisnis Digital', sks: 3 }, { name: 'Penulisan Tesis/ Publikasi / Dokumen Prototipe', sks: 3 }, { name: 'Proyek pada Industri', sks: 3 } ], 'Semester 4': [ { name: 'Thesis', sks: 6 } ] },
+            'Project Based': { 'Semester 1': [ { name: 'Prinsip Dasar Keamanan', sks: 4 }, { name: 'Kerentanan Arsitektur Sistem Komputer dan Jaringan', sks: 3 }, { name: 'Kerangka Kerja Forensik Digital', sks: 3 }, { name: 'Sekuritas dan Privasi untuk Pengguna Teknologi Informasi', sks: 3 }, { name: 'Proyek pada Akademik', sks: 3 }, { name: 'Metodologi Riset', sks: 3 } ], 'Semester 2': [ { name: 'MK Lanjutan 1', sks: 3 }, { name: 'MK Lanjutan 2', sks: 3 }, { name: 'MK Pendukung 1', sks: 3 }, { name: 'MK Pendukung 2', sks: 3 }, { name: 'Implementasi Proyek 1', sks: 4 } ], 'Semester 3': [ { name: 'Implementasi Proyek 2', sks: 4 }, { name: 'Keamanan Siber dan Forensik Digital pada Era Bisnis Digital', sks: 3 }, { name: 'Penulisan Tesis/ Publikasi / Dokumen Prototipe', sks: 3 }, { name: 'Proyek pada Industri', sks: 3 } ], 'Semester 4': [ { name: 'Thesis', sks: 6 } ] }
+        },
+        industri: {
+            'Skema by Course': { 'Semester 1': [ { name: 'Filsafat Teknik Industri', sks: 2 }, { name: 'Analisis Statistik', sks: 3 }, { name: 'Metode Optimasi', sks: 2 }, { name: 'ICT Business Management', sks: 2 }, { name: 'Pilihan 1', sks: 3 } ], 'Semester 2': [ { name: 'Pemodelan Sistem Lanjut', sks: 3 }, { name: 'Metodologi Penelitian', sks: 3 }, { name: 'Rekayasa Sistem IndustrI', sks: 3 }, { name: 'Pilihan 2', sks: 3 }, { name: 'Pilihan 3', sks: 3 } ], 'Semester 3': [ { name: 'Desk Evaluation', sks: 3 }, { name: 'Proposal Tesis', sks: 6 } ], 'Semester 4': [ { name: 'Pemantauan', sks: 6 }, { name: 'Thesis 1', sks: 6 }, { name: 'Thesis 2', sks: 6 } ] },
+            'Skema by Research': { 'Semester 1': [ { name: 'Filsafat Teknik Industri', sks: 2 }, { name: 'Analisis Statistik', sks: 3 }, { name: 'Metode Optimasi', sks: 2 }, { name: 'ICT Business Management', sks: 2 }, { name: 'Pilihan 1', sks: 3 } ], 'Semester 2': [ { name: 'Pemodelan Sistem Lanjut', sks: 3 }, { name: 'Metodologi Penelitian', sks: 3 }, { name: 'Rekayasa Sistem IndustrI', sks: 3 }, { name: 'Pilihan 2', sks: 3 }, { name: 'Pilihan 3', sks: 3 } ], 'Semester 3': [ { name: 'Penelitian Lapangan', sks: 3 }, { name: 'Proposal Tesis', sks: 6 } ], 'Semester 4': [ { name: 'Publikasi', sks: 6 }, { name: 'Thesis 1', sks: 6 }, { name: 'Thesis 2', sks: 6 } ] },
+            'Skema by Project': { 'Semester 1': [ { name: 'Filsafat Teknik Industri', sks: 2 }, { name: 'Analisis Statistik', sks: 3 }, { name: 'Metode Optimasi', sks: 2 }, { name: 'ICT Business Management', sks: 2 }, { name: 'Pilihan 1', sks: 3 } ], 'Semester 2': [ { name: 'Pemodelan Sistem Lanjut', sks: 3 }, { name: 'Metodologi Penelitian', sks: 3 }, { name: 'Rekayasa Sistem IndustrI', sks: 3 }, { name: 'Pilihan 2', sks: 3 }, { name: 'Pilihan 3', sks: 3 } ], 'Semester 3': [ { name: 'Workshop 1', sks: 3 }, { name: 'Proposal Tesis', sks: 6 } ], 'Semester 4': [ { name: 'Workshop 2', sks: 6 }, { name: 'Thesis 1', sks: 6 }, { name: 'Thesis 2', sks: 6 } ] }
+        },
+        akuntansi: {
+            'Accounting and Financial Modelling': { 'Semester 1': [ { name: 'Kreativitas Bisnis dan Digipreneur', sks: 3 }, { name: 'Analisis Akuntansi Perpajakan', sks: 4 }, { name: 'Etika Bisnis', sks: 3 }, { name: 'Pengantar Akuntansi Karbon', sks: 4 } ], 'Semester 2': [ { name: 'Analisis Standar Akuntansi Indonesia', sks: 4 }, { name: 'Perilaku Keuangan dan Akuntansi', sks: 4 }, { name: 'Kecerdasan Buatan dalam Bisnis', sks: 3 }, { name: 'Lingkungan , Sosial, dan Tata Kelola', sks: 3 } ], 'Semester 3': [ { name: 'Metode Penelitian Akuntansi', sks: 4 }, { name: 'Analisis Data Multivariat', sks: 4 }, { name: 'Pemodelan Keuangan', sks: 3 }, { name: 'Penilaian Perusahaan, Merger and Akuisisi', sks: 3 }, { name: 'Seminar Akuntansi Keuangan', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Tugas Akhir', sks: 3 }, { name: 'Tugas Akhir', sks: 6 } ] },
+            'Investigation Audit': { 'Semester 1': [ { name: 'Kreativitas Bisnis dan Digipreneur', sks: 3 }, { name: 'Analisis Akuntansi Perpajakan', sks: 4 }, { name: 'Etika Bisnis', sks: 3 }, { name: 'Pengantar Akuntansi Karbon', sks: 4 } ], 'Semester 2': [ { name: 'Analisis Standar Akuntansi Indonesia', sks: 4 }, { name: 'Perilaku Keuangan dan Akuntansi', sks: 4 }, { name: 'Kecerdasan Buatan dalam Bisnis', sks: 3 }, { name: 'Lingkungan , Sosial, dan Tata Kelola', sks: 3 } ], 'Semester 3': [ { name: 'Metode Penelitian Akuntansi', sks: 4 }, { name: 'Analisis Data Multivariat', sks: 4 }, { name: 'Akuntansi Forensik dan Investigasi Keuangan', sks: 3 }, { name: 'Pencegahan Kecurangan', sks: 3 }, { name: 'Masalah Terkini dalam Audit', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Tugas Akhir', sks: 3 }, { name: 'Tugas Akhir', sks: 6 } ] },
+            'Management Accounting System': { 'Semester 1': [ { name: 'Kreativitas Bisnis dan Digipreneur', sks: 3 }, { name: 'Analisis Akuntansi Perpajakan', sks: 4 }, { name: 'Etika Bisnis', sks: 3 }, { name: 'Pengantar Akuntansi Karbon', sks: 4 } ], 'Semester 2': [ { name: 'Analisis Standar Akuntansi Indonesia', sks: 4 }, { name: 'Perilaku Keuangan dan Akuntansi', sks: 4 }, { name: 'Kecerdasan Buatan dalam Bisnis', sks: 3 }, { name: 'Lingkungan , Sosial, dan Tata Kelola', sks: 3 } ], 'Semester 3': [ { name: 'Metode Penelitian Akuntansi', sks: 4 }, { name: 'Analisis Data Multivariat', sks: 4 }, { name: 'Akuntansi Manajemen Menengah', sks: 3 }, { name: 'Akuntansi Manajemen Strategis', sks: 3 }, { name: 'Akuntansi Manajemen Kontemporer', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Tugas Akhir', sks: 3 }, { name: 'Tugas Akhir', sks: 6 } ] }
+        },
+        komunikasi: {
+            'Digital Communication Management': { 'Semester 1': [ { name: 'Teori Komunikasi dan Media', sks: 4 }, { name: 'Metode Riset Analitik', sks: 4 }, { name: 'Etika Filsafat dan Komunikasi', sks: 3 }, { name: 'Manajemen Kewirausahaan', sks: 3 }, { name: 'Komunikasi Global di era Digital', sks: 3 }, { name: 'Kepemimpinan dan Transformasi Digital', sks: 3 } ], 'Semester 2': [ { name: 'Manajemen Komunikasi Korporasi', sks: 4 }, { name: 'Manajemen Isu dan Krisis', sks: 4 }, { name: 'Audit Manajemen Komunikasi', sks: 4 }, { name: 'Strategi dan Program Manajemen Komunikasi Digital', sks: 4 }, { name: 'Sertifikasi', sks: 4 } ], 'Semester 3': [ { name: 'Kajian Literatur', sks: 4 }, { name: 'Proposal Tugas Akhir', sks: 5 }, { name: 'Tugas Akhir', sks: 7 } ] },
+            'Digital Media': { 'Semester 1': [ { name: 'Teori Komunikasi dan Media', sks: 4 }, { name: 'Metode Riset Analitik', sks: 4 }, { name: 'Etika Filsafat dan Komunikasi', sks: 3 }, { name: 'Manajemen Kewirausahaan', sks: 3 }, { name: 'Komunikasi Global di era Digital', sks: 3 }, { name: 'Kepemimpinan dan Transformasi Digital', sks: 3 } ], 'Semester 2': [ { name: 'Studi Budaya dan Media Digital', sks: 4 }, { name: 'Ekonomi politik media digital', sks: 4 }, { name: 'Bisnis Media Digital', sks: 4 }, { name: 'Analisis Media Digital', sks: 4 }, { name: 'Sertifikasi', sks: 4 } ], 'Semester 3': [ { name: 'Kajian Literatur', sks: 4 }, { name: 'Proposal Tugas Akhir', sks: 5 }, { name: 'Tugas Akhir', sks: 7 } ] }
+        },
+        administrasi_bisnis: {
+            'Business Governance': { 'Semester 1': [ { name: 'Corporate Governance Strategic', sks: 3 }, { name: 'Business Global and Corporate Strategic', sks: 3 }, { name: 'Human Capital Strategy', sks: 3 }, { name: 'Knowledge Management Strategic', sks: 3 }, { name: 'Enterprise Resource Planning', sks: 3 } ], 'Semester 2': [ { name: 'Corporate Finance Strategic', sks: 3 }, { name: 'Supply Chain Management', sks: 3 }, { name: 'Strategic Global Entrepreneurship', sks: 3 }, { name: 'Research Method & Scientific Writing', sks: 3 }, { name: 'Entrepreuneurial Marketing', sks: 3 } ], 'Semester 3': [ { name: 'Big Data Management & Analytics', sks: 3 }, { name: 'Specialization Course 1: Corporate Performance Management', sks: 3 }, { name: 'Specialization Course 2: Corporate Social Resposibility', sks: 3 }, { name: 'Specialization Course 3: Governance Risk Compliance', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Thesis/Project', sks: 4 }, { name: 'Thesis/Project', sks: 8 } ] },
+            'Strategic Leadership': { 'Semester 1': [ { name: 'Corporate Governance Strategic', sks: 3 }, { name: 'Business Global and Corporate Strategic', sks: 3 }, { name: 'Human Capital Strategy', sks: 3 }, { name: 'Knowledge Management Strategic', sks: 3 }, { name: 'Enterprise Resource Planning', sks: 3 } ], 'Semester 2': [ { name: 'Corporate Finance Strategic', sks: 3 }, { name: 'Supply Chain Management', sks: 3 }, { name: 'Strategic Global Entrepreneurship', sks: 3 }, { name: 'Research Method & Scientific Writing', sks: 3 }, { name: 'Entrepreuneurial Marketing', sks: 3 } ], 'Semester 3': [ { name: 'Big Data Management & Analytics', sks: 3 }, { name: 'Specialization Course 1: Digital Leadership', sks: 3 }, { name: 'Specialization Course 2: Strategic Business Patnership', sks: 3 }, { name: 'Specialization Course 3: Corporate Culture', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Thesis/Project', sks: 4 }, { name: 'Thesis/Project', sks: 8 } ] },
+            'Start-Up Business Strategy': { 'Semester 1': [ { name: 'Corporate Governance Strategic', sks: 3 }, { name: 'Business Global and Corporate Strategic', sks: 3 }, { name: 'Human Capital Strategy', sks: 3 }, { name: 'Knowledge Management Strategic', sks: 3 }, { name: 'Enterprise Resource Planning', sks: 3 } ], 'Semester 2': [ { name: 'Corporate Finance Strategic', sks: 3 }, { name: 'Supply Chain Management', sks: 3 }, { name: 'Strategic Global Entrepreneurship', sks: 3 }, { name: 'Research Method & Scientific Writing', sks: 3 }, { name: 'Entrepreuneurial Marketing', sks: 3 } ], 'Semester 3': [ { name: 'Big Data Management & Analytics', sks: 3 }, { name: 'Specialization Course 1: Digital Innovation', sks: 3 }, { name: 'Specialization Course 2: Business Idea and Opportunities', sks: 3 }, { name: 'Specialization Course 3: Investor Pitching Strategic', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Thesis/Project', sks: 4 }, { name: 'Thesis/Project', sks: 8 } ] },
+            'Global Business Strategy': { 'Semester 1': [ { name: 'Corporate Governance Strategic', sks: 3 }, { name: 'Business Global and Corporate Strategic', sks: 3 }, { name: 'Human Capital Strategy', sks: 3 }, { name: 'Knowledge Management Strategic', sks: 3 }, { name: 'Enterprise Resource Planning', sks: 3 } ], 'Semester 2': [ { name: 'Corporate Finance Strategic', sks: 3 }, { name: 'Supply Chain Management', sks: 3 }, { name: 'Strategic Global Entrepreneurship', sks: 3 }, { name: 'Research Method & Scientific Writing', sks: 3 }, { name: 'Entrepreuneurial Marketing', sks: 3 } ], 'Semester 3': [ { name: 'Big Data Management & Analytics', sks: 3 }, { name: 'Specialization Course 1: Global Expansion Strategy', sks: 3 }, { name: 'Specialization Course 2: Managing Diversity', sks: 3 }, { name: 'Specialization Course 3: Global Business Communication', sks: 3 } ], 'Semester 4': [ { name: 'Proposal Thesis/Project', sks: 4 }, { name: 'Thesis/Project', sks: 8 } ] }
+        }
+    };
 
     // --- DOM Element Selections ---
+    const s2PlannerCard = document.getElementById('s2-planner-card');
+    const s2MajorSelect = document.getElementById('s2-major');
+    const s2ConcentrationSelect = document.getElementById('s2-concentration');
+    const s2SemesterSelect = document.getElementById('s2-semester');
+    const s2FillCoursesBtn = document.getElementById('s2-fill-courses-btn');
     const coursesList = document.getElementById('courses-list');
     const programLevelSelect = document.getElementById('program-level');
     const englishScoreInput = document.getElementById('english-score');
@@ -13,282 +64,73 @@ document.addEventListener('DOMContentLoaded', function() {
     const gpaResultEl = document.getElementById('result');
     const predicateResultEl = document.getElementById('predicate-result');
     const summaryEl = document.getElementById('summary');
-    
-    // Upload & Download Elements
     const downloadTemplateBtn = document.getElementById('download-template-btn');
     const uploadSpreadsheetInput = document.getElementById('upload-spreadsheet');
-    
-    // Modal elements
     const feedbackModal = document.getElementById('ai-feedback-modal');
     const plannerModal = document.getElementById('ai-planner-modal');
     const allModals = document.querySelectorAll('.modal-overlay');
 
+    // --- S2 Planner Functions ---
+    const populateS2Concentrations = () => {
+        const major = s2MajorSelect.value;
+        const concentrations = Object.keys(s2Curriculum[major]);
+        s2ConcentrationSelect.innerHTML = concentrations.map(c => `<option value="${c}">${c}</option>`).join('');
+        populateS2Semesters();
+    };
+
+    const populateS2Semesters = () => {
+        const major = s2MajorSelect.value;
+        const concentration = s2ConcentrationSelect.value;
+        const semesters = Object.keys(s2Curriculum[major][concentration]);
+        s2SemesterSelect.innerHTML = semesters.map(s => `<option value="${s}">${s}</option>`).join('');
+    };
+
+    const fillS2Courses = () => {
+        const major = s2MajorSelect.value;
+        const concentration = s2ConcentrationSelect.value;
+        const semester = s2SemesterSelect.value;
+        const coursesToFill = s2Curriculum[major][concentration][semester];
+        
+        coursesList.innerHTML = ''; // Clear existing courses
+        coursesToFill.forEach(course => coursesList.appendChild(createCourseRow(course)));
+        calculateGPA();
+    };
+
     // --- Core Functions ---
-    const calculateGPA = () => {
-        let totalPoints = 0, totalSKS = 0;
-        coursesList.querySelectorAll('.course-card-item').forEach(row => {
-            const sks = parseInt(row.querySelector('.course-sks').value, 10);
-            const grade = row.querySelector('.course-grade').value;
-            if (!isNaN(sks) && grade && gradePoints[grade] !== undefined) {
-                totalPoints += sks * gradePoints[grade];
-                totalSKS += sks;
-            }
-        });
-        const gpa = totalSKS > 0 ? (totalPoints / totalSKS) : 0;
-        const selectedLevel = programLevelSelect.value;
-        gpaResultEl.textContent = gpa.toFixed(2);
-        predicateResultEl.textContent = getPredicate(gpa, selectedLevel);
-        summaryEl.textContent = totalSKS > 0 ? `Berdasarkan total ${totalSKS} SKS.` : 'Silakan isi mata kuliah Anda.';
-    };
-
-    const getPredicate = (gpa, level) => {
-        if (level === 's1') {
-            if (gpa >= 3.91) return 'Sempurna';
-            if (gpa >= 3.51) return 'Dengan Pujian';
-            if (gpa >= 3.01) return 'Sangat Memuaskan';
-            if (gpa >= 2.76) return 'Memuaskan';
-        } else if (level === 's2') {
-            if (gpa >= 3.96) return 'Sempurna';
-            if (gpa >= 3.76) return 'Dengan Pujian';
-            if (gpa >= 3.51) return 'Sangat Memuaskan';
-            if (gpa >= 3.26) return 'Memuaskan';
-        } else if (level === 's3') {
-            if (gpa >= 3.96) return 'Sempurna';
-            if (gpa >= 3.76) return 'Dengan Pujian';
-            if (gpa >= 3.51) return 'Sangat Memuaskan';
-            if (gpa >= 3.26) return 'Memuaskan';
-        }
-        return 'Predikat akan tampil di sini';
-    };
-
-    const checkEnglishScore = () => {
-        const program = programLevelSelect.value;
-        const score = parseInt(englishScoreInput.value, 10);
-        englishResultDiv.textContent = '';
-        if (isNaN(score)) return;
-        const minScore = minEnglishScoresForGraduation[program];
-        if (score >= minScore) {
-            englishResultDiv.textContent = `✓ Memenuhi syarat kelulusan (min. ${minScore}).`;
-            englishResultDiv.style.color = 'var(--success-color)';
-        } else {
-            englishResultDiv.textContent = `✗ Belum memenuhi syarat kelulusan (min. ${minScore}).`;
-            englishResultDiv.style.color = 'var(--error-color)';
-        }
-    };
-
-    const createCourseRow = (course = { name: '', sks: '', grade: '' }) => {
-        const row = document.createElement('div');
-        row.className = 'course-card-item';
-        row.innerHTML = `
-            <div class="course-card-header-item">
-                <input type="text" class="course-name" placeholder="Nama Mata Kuliah" value="${course.name}">
-                <button class="remove-course-btn">&times;</button>
-            </div>
-            <div class="course-details">
-                <input type="number" class="course-sks" min="1" max="6" placeholder="SKS" value="${course.sks}">
-                <select class="course-grade">
-                    <option value="">Nilai</option>
-                    <option value="A" ${course.grade==='A'?'selected':''}>A</option>
-                    <option value="AB" ${course.grade==='AB'?'selected':''}>AB</option>
-                    <option value="B" ${course.grade==='B'?'selected':''}>B</option>
-                    <option value="BC" ${course.grade==='BC'?'selected':''}>BC</option>
-                    <option value="C" ${course.grade==='C'?'selected':''}>C</option>
-                    <option value="D" ${course.grade==='D'?'selected':''}>D</option>
-                    <option value="E" ${course.grade==='E'?'selected':''}>E</option>
-                </select>
-            </div>
-        `;
-        row.querySelector('.remove-course-btn').addEventListener('click', () => {
-            row.style.animation = 'fadeOut 0.3s ease-out forwards';
-            row.addEventListener('animationend', () => {
-                 row.remove();
-                 calculateGPA();
-            });
-        });
-        return row;
-    };
-
-    const addCourse = () => {
-        const newRow = createCourseRow();
-        coursesList.appendChild(newRow);
-    };
-
-    const downloadTemplate = (e) => {
-        e.preventDefault();
-        const headers = '"Nama Mata Kuliah",SKS,Nilai';
-        const example1 = '"Contoh: Pemrograman Dasar",3,A';
-        const csvContent = `data:text/csv;charset=utf-8,${headers}\n${example1}`;
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", "template_mata_kuliah.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file || !file.name.endsWith('.csv')) {
-            alert('Format file tidak didukung. Harap unggah file .csv');
-            event.target.value = '';
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => parseCSVAndPopulate(e.target.result);
-        reader.readAsText(file);
-        event.target.value = '';
-    };
-
-    const parseCSVAndPopulate = (text) => {
-        const courses = text.split(/\r?\n/).slice(1).map(line => {
-            if (!line.trim()) return null;
-            const columns = line.split(',');
-            if (columns.length < 3) return null;
-            const name = columns[0].replace(/"/g, '').trim();
-            const sks = parseInt(columns[1].trim(), 10);
-            const grade = columns[2].trim().toUpperCase();
-            return (name && !isNaN(sks)) ? { name, sks, grade: gradePoints[grade] ? grade : '' } : null;
-        }).filter(Boolean);
-
-        if (courses.length > 0) {
-            coursesList.innerHTML = '';
-            courses.forEach(course => coursesList.appendChild(createCourseRow(course)));
-            calculateGPA();
-        } else {
-            alert('Tidak ada data mata kuliah yang valid ditemukan di dalam file.');
-        }
-    };
-    
-    // --- AI Modal Functions ---
+    const calculateGPA = () => { let totalPoints = 0, totalSKS = 0; coursesList.querySelectorAll('.course-card-item').forEach(row => { const sks = parseInt(row.querySelector('.course-sks').value, 10); const grade = row.querySelector('.course-grade').value; if (!isNaN(sks) && grade && gradePoints[grade] !== undefined) { totalPoints += sks * gradePoints[grade]; totalSKS += sks; } }); const gpa = totalSKS > 0 ? (totalPoints / totalSKS) : 0; const selectedLevel = programLevelSelect.value; gpaResultEl.textContent = gpa.toFixed(2); predicateResultEl.textContent = getPredicate(gpa, selectedLevel); summaryEl.textContent = totalSKS > 0 ? `Berdasarkan total ${totalSKS} SKS.` : 'Silakan isi mata kuliah Anda.'; };
+    const getPredicate = (gpa, level) => { if (level === 's1') { if (gpa >= 3.91) return 'Sempurna'; if (gpa >= 3.51) return 'Dengan Pujian'; if (gpa >= 3.01) return 'Sangat Memuaskan'; if (gpa >= 2.76) return 'Memuaskan'; } else if (level === 's2') { if (gpa >= 3.96) return 'Sempurna'; if (gpa >= 3.76) return 'Dengan Pujian'; if (gpa >= 3.51) return 'Sangat Memuaskan'; if (gpa >= 3.26) return 'Memuaskan'; } else if (level === 's3') { if (gpa >= 3.96) return 'Sempurna'; if (gpa >= 3.76) return 'Dengan Pujian'; if (gpa >= 3.51) return 'Sangat Memuaskan'; if (gpa >= 3.26) return 'Memuaskan'; } return 'Predikat akan tampil di sini'; };
+    const checkEnglishScore = () => { const program = programLevelSelect.value; const score = parseInt(englishScoreInput.value, 10); englishResultDiv.textContent = ''; if (isNaN(score)) return; const minScore = minEnglishScoresForGraduation[program]; if (score >= minScore) { englishResultDiv.textContent = `✓ Memenuhi syarat kelulusan (min. ${minScore}).`; englishResultDiv.style.color = 'var(--success-color)'; } else { englishResultDiv.textContent = `✗ Belum memenuhi syarat kelulusan (min. ${minScore}).`; englishResultDiv.style.color = 'var(--error-color)'; } };
+    const createCourseRow = (course = { name: '', sks: '', grade: '' }) => { const row = document.createElement('div'); row.className = 'course-card-item'; row.innerHTML = `<div class="course-card-header-item"><input type="text" class="course-name" placeholder="Nama Mata Kuliah" value="${course.name}"><button class="remove-course-btn">&times;</button></div><div class="course-details"><input type="number" class="course-sks" min="1" max="10" placeholder="SKS" value="${course.sks}"><select class="course-grade"><option value="">Nilai</option><option value="A" ${course.grade==='A'?'selected':''}>A</option><option value="AB" ${course.grade==='AB'?'selected':''}>AB</option><option value="B" ${course.grade==='B'?'selected':''}>B</option><option value="BC" ${course.grade==='BC'?'selected':''}>BC</option><option value="C" ${course.grade==='C'?'selected':''}>C</option><option value="D" ${course.grade==='D'?'selected':''}>D</option><option value="E" ${course.grade==='E'?'selected':''}>E</option></select></div>`; row.querySelector('.remove-course-btn').addEventListener('click', () => { row.style.animation = 'fadeOut 0.3s ease-out forwards'; row.addEventListener('animationend', () => { row.remove(); calculateGPA(); }); }); return row; };
+    const addCourse = () => { coursesList.appendChild(createCourseRow()); };
+    const downloadTemplate = (e) => { e.preventDefault(); const headers = '"Nama Mata Kuliah",SKS,Nilai'; const example1 = '"Contoh: Pemrograman Dasar",3,A'; const csvContent = `data:text/csv;charset=utf-8,${headers}\n${example1}`; const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", "template_mata_kuliah.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link); };
+    const handleFileUpload = (event) => { const file = event.target.files[0]; if (!file || !file.name.endsWith('.csv')) { alert('Format file tidak didukung. Harap unggah file .csv'); event.target.value = ''; return; } const reader = new FileReader(); reader.onload = (e) => parseCSVAndPopulate(e.target.result); reader.readAsText(file); event.target.value = ''; };
+    const parseCSVAndPopulate = (text) => { const courses = text.split(/\r?\n/).slice(1).map(line => { if (!line.trim()) return null; const columns = line.split(','); if (columns.length < 3) return null; const name = columns[0].replace(/"/g, '').trim(); const sks = parseInt(columns[1].trim(), 10); const grade = columns[2].trim().toUpperCase(); return (name && !isNaN(sks)) ? { name, sks, grade: gradePoints[grade] ? grade : '' } : null; }).filter(Boolean); if (courses.length > 0) { coursesList.innerHTML = ''; courses.forEach(course => coursesList.appendChild(createCourseRow(course))); calculateGPA(); } else { alert('Tidak ada data mata kuliah yang valid ditemukan di dalam file.'); } };
     const openModal = (modalElement) => { modalElement.classList.add('active'); }
     const closeModal = (modalElement) => { modalElement.classList.remove('active'); }
-
-    const callGeminiAPI = async (prompt, modal) => {
-        const loader = modal.querySelector('.modal-loader');
-        const responseDiv = modal.querySelector('.modal-response');
-        loader.style.display = 'flex';
-        responseDiv.style.display = 'none';
-
-        try {
-            const apiKey = "";
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error.message || `API Error: ${response.statusText}`);
-            }
-            const result = await response.json();
-            if(result.candidates && result.candidates.length > 0){
-                responseDiv.innerHTML = result.candidates[0].content.parts[0].text;
-            } else {
-                throw new Error("Respon dari AI tidak valid atau kosong.");
-            }
-        } catch (error) {
-            console.error("AI Feedback Error:", error);
-            responseDiv.innerHTML = `<p style="color:var(--error-color)"><strong>Gagal Terhubung ke AI.</strong></p><p style="font-size:0.8rem; color:var(--text-color-light)">Ini bisa terjadi jika Anda menjalankan file ini secara langsung di browser (dari folder lokal). Coba jalankan aplikasi melalui server lokal. Jika masalah berlanjut, mungkin ada kendala pada layanan AI.</p>`;
-        } finally {
-            loader.style.display = 'none';
-            responseDiv.style.display = 'block';
-        }
-    };
+    const callGeminiAPI = async (prompt, modal) => { const loader = modal.querySelector('.modal-loader'); const responseDiv = modal.querySelector('.modal-response'); loader.style.display = 'flex'; responseDiv.style.display = 'none'; try { const apiKey = ""; const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] }) }); if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.error.message || `API Error: ${response.statusText}`); } const result = await response.json(); if(result.candidates && result.candidates.length > 0){ responseDiv.innerHTML = result.candidates[0].content.parts[0].text; } else { throw new Error("Respon dari AI tidak valid atau kosong."); } } catch (error) { console.error("AI Feedback Error:", error); responseDiv.innerHTML = `<p style="color:var(--error-color)"><strong>Gagal Terhubung ke AI.</strong></p><p style="font-size:0.8rem; color:var(--text-color-light)">Ini bisa terjadi jika Anda menjalankan file ini secara langsung di browser (dari folder lokal). Coba jalankan aplikasi melalui server lokal. Jika masalah berlanjut, mungkin ada kendala pada layanan AI.</p>`; } finally { loader.style.display = 'none'; responseDiv.style.display = 'block'; } };
     
     // --- Event Listeners ---
     coursesList.addEventListener('input', calculateGPA);
     addCourseBtn.addEventListener('click', addCourse);
-    programLevelSelect.addEventListener('change', () => {
-        document.querySelectorAll('.predicate-table').forEach(t => t.style.display = 'none');
-        document.getElementById(`predicate-${programLevelSelect.value}`).style.display = 'block';
-        calculateGPA();
-        checkEnglishScore();
-    });
+    programLevelSelect.addEventListener('change', () => { document.querySelectorAll('.predicate-table').forEach(t => t.style.display = 'none'); document.getElementById(`predicate-${programLevelSelect.value}`).style.display = 'block'; calculateGPA(); checkEnglishScore(); s2PlannerCard.style.display = programLevelSelect.value === 's2' ? 'block' : 'none'; });
     englishScoreInput.addEventListener('input', checkEnglishScore);
-    
     downloadTemplateBtn.addEventListener('click', downloadTemplate);
     uploadSpreadsheetInput.addEventListener('change', handleFileUpload);
+    allModals.forEach(m => { m.querySelector('.close-modal-btn').addEventListener('click', () => closeModal(m)); });
+    document.getElementById('get-ai-feedback-btn').addEventListener('click', async (e) => { const btn = e.currentTarget; btn.classList.add('loading'); btn.disabled = true; openModal(feedbackModal); const studentName = document.getElementById('student-name').value; const studentNIM = document.getElementById('student-nim').value; const gpa = gpaResultEl.textContent; const coursesData = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => { const name = row.querySelector('.course-name').value; const sks = row.querySelector('.course-sks').value; const grade = row.querySelector('.course-grade').value; return (name && sks && grade) ? `- ${name} (${sks} SKS): Nilai ${grade}` : null; }).filter(Boolean); if (coursesData.length === 0) {  const responseDiv = feedbackModal.querySelector('.modal-response'); responseDiv.innerHTML = '<p>Silakan isi setidaknya satu mata kuliah lengkap untuk mendapatkan umpan balik.</p>'; feedbackModal.querySelector('.modal-loader').style.display = 'none'; responseDiv.style.display = 'block';  btn.classList.remove('loading'); btn.disabled = false; return;  } const prompt = `Anda adalah seorang konselor akademik yang positif dan memotivasi di Telkom University. Seorang mahasiswa meminta umpan balik tentang performa akademiknya.\n\nData Mahasiswa:\nNama: ${studentName || "Mahasiswa"}\nNIM: ${studentNIM || "Tidak ada"}\nIPK saat ini: ${gpa}\nMata Kuliah yang telah dinilai:\n${coursesData.join('\n')}\n\nTugas Anda:\n1. Sapa mahasiswa dengan namanya. Berikan paragraf pembuka yang singkat & positif.\n2. Berikan 3-4 poin saran belajar yang spesifik dan praktis.\n3. Berikan paragraf penutup yang memberi semangat.\n\nJawab dalam format HTML sederhana (gunakan <p>, <ul>, dan <li>) dan dalam Bahasa Indonesia.`; await callGeminiAPI(prompt, feedbackModal); btn.classList.remove('loading'); btn.disabled = false; });
+    document.getElementById('open-planner-modal-btn').addEventListener('click', () => { plannerModal.querySelector('.planner-options').style.display = 'grid'; plannerModal.querySelector('.modal-response').innerHTML = ''; plannerModal.querySelector('.modal-response').style.display = 'none'; openModal(plannerModal); });
+    document.getElementById('get-study-plan-btn').addEventListener('click', async () => { const courses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && c.grade); const prompt = `Anda adalah seorang tutor akademik. Buatkan rencana belajar mingguan dalam format tabel HTML untuk mahasiswa berdasarkan daftar mata kuliah ini:\n\n${courses.map(c => `- ${c.name} (Nilai: ${c.grade})`).join('\n')}\n\nFokuskan lebih banyak waktu pada mata kuliah dengan nilai C, D, atau E. Buat jadwal dari Senin hingga Jumat, dengan sesi pagi, siang, dan sore. Berikan juga tips singkat di akhir.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
+    document.getElementById('get-career-suggestion-btn').addEventListener('click', async () => { const highGradeCourses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && ['A', 'AB', 'B'].includes(c.grade)); if (highGradeCourses.length === 0) { alert("Isi setidaknya satu mata kuliah dengan nilai A, AB, atau B untuk mendapatkan saran karir."); return; } const prompt = `Anda adalah seorang konselor karir. Berdasarkan daftar mata kuliah dengan nilai terbaik ini:\n\n${highGradeCourses.map(c => `- ${c.name}`).join('\n')}\n\nBerikan 3 saran jalur karir atau spesialisasi yang relevan. Untuk setiap saran, berikan penjelasan singkat (2-3 kalimat) mengapa mata kuliah tersebut mendukung jalur karir itu. Gunakan format HTML dengan <h3> untuk judul karir dan <p> untuk penjelasan.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
     
-    allModals.forEach(m => {
-        m.querySelector('.close-modal-btn').addEventListener('click', () => closeModal(m));
-    });
+    // S2 Planner Listeners
+    s2MajorSelect.addEventListener('change', populateS2Concentrations);
+    s2ConcentrationSelect.addEventListener('change', populateS2Semesters);
+    s2FillCoursesBtn.addEventListener('click', fillS2Courses);
 
-    document.getElementById('get-ai-feedback-btn').addEventListener('click', async (e) => {
-        const btn = e.currentTarget;
-        btn.classList.add('loading');
-        btn.disabled = true;
-        openModal(feedbackModal);
-
-        const studentName = document.getElementById('student-name').value;
-        const studentNIM = document.getElementById('student-nim').value;
-        const gpa = gpaResultEl.textContent;
-        const coursesData = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => {
-            const name = row.querySelector('.course-name').value;
-            const sks = row.querySelector('.course-sks').value;
-            const grade = row.querySelector('.course-grade').value;
-            return (name && sks && grade) ? `- ${name} (${sks} SKS): Nilai ${grade}` : null;
-        }).filter(Boolean);
-
-        if (coursesData.length === 0) { 
-            const responseDiv = feedbackModal.querySelector('.modal-response');
-            responseDiv.innerHTML = '<p>Silakan isi setidaknya satu mata kuliah lengkap untuk mendapatkan umpan balik.</p>';
-            feedbackModal.querySelector('.modal-loader').style.display = 'none';
-            responseDiv.style.display = 'block'; 
-            btn.classList.remove('loading');
-            btn.disabled = false;
-            return; 
-        }
-
-        const prompt = `Anda adalah seorang konselor akademik yang positif dan memotivasi di Telkom University. Seorang mahasiswa meminta umpan balik tentang performa akademiknya.\n\nData Mahasiswa:\nNama: ${studentName || "Mahasiswa"}\nNIM: ${studentNIM || "Tidak ada"}\nIPK saat ini: ${gpa}\nMata Kuliah yang telah dinilai:\n${coursesData.join('\n')}\n\nTugas Anda:\n1. Sapa mahasiswa dengan namanya. Berikan paragraf pembuka yang singkat & positif.\n2. Berikan 3-4 poin saran belajar yang spesifik dan praktis.\n3. Berikan paragraf penutup yang memberi semangat.\n\nJawab dalam format HTML sederhana (gunakan <p>, <ul>, dan <li>) dan dalam Bahasa Indonesia.`;
-        
-        await callGeminiAPI(prompt, feedbackModal);
-        btn.classList.remove('loading');
-        btn.disabled = false;
-    });
-
-    document.getElementById('open-planner-modal-btn').addEventListener('click', () => {
-        plannerModal.querySelector('.planner-options').style.display = 'grid';
-        plannerModal.querySelector('.modal-response').innerHTML = '';
-        plannerModal.querySelector('.modal-response').style.display = 'none';
-        openModal(plannerModal);
-    });
-    
-    document.getElementById('get-study-plan-btn').addEventListener('click', async () => {
-        const courses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({
-            name: row.querySelector('.course-name').value,
-            grade: row.querySelector('.course-grade').value,
-        })).filter(c => c.name && c.grade);
-
-        const prompt = `Anda adalah seorang tutor akademik. Buatkan rencana belajar mingguan dalam format tabel HTML untuk mahasiswa berdasarkan daftar mata kuliah ini:\n\n${courses.map(c => `- ${c.name} (Nilai: ${c.grade})`).join('\n')}\n\nFokuskan lebih banyak waktu pada mata kuliah dengan nilai C, D, atau E. Buat jadwal dari Senin hingga Jumat, dengan sesi pagi, siang, dan sore. Berikan juga tips singkat di akhir.`;
-        
-        plannerModal.querySelector('.planner-options').style.display = 'none';
-        await callGeminiAPI(prompt, plannerModal);
-    });
-    
-    document.getElementById('get-career-suggestion-btn').addEventListener('click', async () => {
-        const highGradeCourses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({
-            name: row.querySelector('.course-name').value,
-            grade: row.querySelector('.course-grade').value,
-        })).filter(c => c.name && ['A', 'AB', 'B'].includes(c.grade));
-
-        if (highGradeCourses.length === 0) {
-            alert("Isi setidaknya satu mata kuliah dengan nilai A, AB, atau B untuk mendapatkan saran karir.");
-            return;
-        }
-
-        const prompt = `Anda adalah seorang konselor karir. Berdasarkan daftar mata kuliah dengan nilai terbaik ini:\n\n${highGradeCourses.map(c => `- ${c.name}`).join('\n')}\n\nBerikan 3 saran jalur karir atau spesialisasi yang relevan. Untuk setiap saran, berikan penjelasan singkat (2-3 kalimat) mengapa mata kuliah tersebut mendukung jalur karir itu. Gunakan format HTML dengan <h3> untuk judul karir dan <p> untuk penjelasan.`;
-        
-        plannerModal.querySelector('.planner-options').style.display = 'none';
-        await callGeminiAPI(prompt, plannerModal);
-    });
-    
     // Initial Setup
     window.addEventListener('load', () => document.body.classList.remove('loading'));
-    if (initialCourses.length > 0) {
-        initialCourses.forEach(course => coursesList.appendChild(createCourseRow(course)));
-    } else {
-        addCourse();
-    }
+    if (initialCourses.length > 0) { initialCourses.forEach(course => coursesList.appendChild(createCourseRow(course))); } else { addCourse(); }
     document.querySelector('.predicate-table').style.display = 'block';
+    populateS2Concentrations();
     calculateGPA();
 });

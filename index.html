@@ -53,6 +53,37 @@
                     </div>
                 </div>
 
+                <!-- S2 Study Plan Section -->
+                <div id="s2-planner-card" class="info-card glass-card" style="display: none;">
+                    <h2>Rencana Studi S2 (Otomatis)</h2>
+                    <div class="s2-planner-grid">
+                        <div>
+                            <label for="s2-major">Program Studi</label>
+                            <select id="s2-major">
+                                <option value="manajemen">S2 Manajemen</option>
+                                <option value="elektro">S2 Teknik Elektro</option>
+                                <option value="informatika">S2 Informatika</option>
+                                <option value="cybersecurity">S2 Cybersecurity & Digital Forensics</option>
+                                <option value="industri">S2 Teknik Industri</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="s2-concentration">Jalur / Konsentrasi</label>
+                            <select id="s2-concentration">
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                         <div class="s2-semester-selector">
+                            <label for="s2-semester">Semester</label>
+                            <select id="s2-semester">
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                        <button id="s2-fill-courses-btn" class="s2-fill-btn">Isi Mata Kuliah</button>
+                    </div>
+                </div>
+
+
                 <div class="courses-card glass-card">
                     <div class="card-header">
                         <h2>Mata Kuliah</h2>
@@ -100,6 +131,7 @@
                     <div class="tab-header">
                         <button class="tab-link active" data-tab="tab-1">Konversi Nilai</button>
                         <button class="tab-link" data-tab="tab-2">Predikat Lulus</button>
+                        <button class="tab-link" data-tab="tab-3">Beban Studi</button>
                     </div>
                     <div id="tab-1" class="tab-content active">
                          <div class="conversion-grid">
@@ -138,6 +170,17 @@
                                 <div class="predicate-item"><span class="predicate-name">Dengan Pujian</span> <span class="predicate-ipk">3.76 – 3.95</span></div>
                                 <div class="predicate-item"><span class="predicate-name">Sangat Memuaskan</span> <span class="predicate-ipk">3.51 – 3.75</span></div>
                                 <div class="predicate-item"><span class="predicate-name">Memuaskan</span> <span class="predicate-ipk">3.26 – 3.50</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-content">
+                        <div class="info-table-container">
+                            <h4>Informasi Aturan Studi</h4>
+                             <div class="info-grid">
+                                <div class="info-item"><span class="info-name">S1 / S1 Terapan</span> <span class="info-value">8 smt / 144-160 SKS</span></div>
+                                <div class="info-item"><span class="info-name">Diploma Tiga (D3)</span> <span class="info-value">6 smt / 108-120 SKS</span></div>
+                                <div class="info-item"><span class="info-name">Magister (S2)</span> <span class="info-value">4 smt / 54-72 SKS</span></div>
+                                <div class="info-item"><span class="info-name">Doktor (S3)</span> <span class="info-value">6 smt / 90-108 SKS</span></div>
                             </div>
                         </div>
                     </div>
