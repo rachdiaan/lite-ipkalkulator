@@ -390,11 +390,32 @@ input:focus, select:focus {
 .predicate-table table { width: 100%; font-size: 0.8rem; }
 
 /* --- Modal --- */
-.modal-overlay { display: none; animation: modal-bg-fade-in 0.3s ease; }
-.modal-overlay.active { display: flex; }
-@keyframes modal-bg-fade-in { from { background-color: rgba(0,0,0,0); } to { background-color: rgba(0,0,0,0.5); } }
-.modal-content { animation: modal-scale-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-@keyframes modal-scale-in { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s;
+}
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-content {
+    position: relative;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+}
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .modal-header h3 { margin: 0; }
 .modal-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); transition: var(--transition-fast); }
@@ -422,7 +443,6 @@ input:focus, select:focus {
 @media (min-width: 768px) {
     .courses-list { grid-template-columns: 1fr 1fr; }
 }
-
 
 @media (max-width: 640px) {
     .main-container { padding: 0 1rem; margin: 1rem auto; }
