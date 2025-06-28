@@ -17,8 +17,8 @@
         <header class="app-header">
             <img class="logo" src="https://smb.telkomuniversity.ac.id/wp-content/uploads/2023/03/Logo-Utama-Telkom-University.png" alt="Logo Universitas Telkom" onerror="this.onerror=null;this.style.display='none';">
             <div class="header-text">
-                <h1>IP-Kalkulator</h1>
-                <p>Hitung dan Rencanakan Akademik sambil disemangatin AI!😱</p>
+                <h1>Kalkulator Akademik Terpadu</h1>
+                <p>Hitung IPK, cek syarat Bahasa Inggris, dan dapatkan saran AI.</p>
             </div>
         </header>
 
@@ -85,10 +85,15 @@
                     <p id="result" class="gpa-result">0.00</p>
                     <p id="predicate-result" class="predicate-result"></p>
                     <p id="summary" class="summary-text">Silakan isi mata kuliah Anda.</p>
-                    <button id="get-ai-feedback-btn" class="ai-feedback-btn">
-                        <span class="btn-text">✨ Dapatkan Umpan Balik & Saran AI</span>
-                        <span class="btn-loader"></span>
-                    </button>
+                    <div class="result-actions">
+                        <button id="get-ai-feedback-btn" class="ai-feedback-btn">
+                            <span class="btn-text">✨ Umpan Balik AI</span>
+                            <span class="btn-loader"></span>
+                        </button>
+                        <button id="open-planner-modal-btn" class="ai-planner-btn">
+                             <span class="btn-text">🚀 Jelajahi Potensi</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="info-tabs glass-card">
@@ -145,22 +150,49 @@
         © 2025. Created with ❤️ by Rachdian
     </footer>
 
-    <!-- AI Feedback Modal -->
+    <!-- Modals -->
     <div id="ai-feedback-modal" class="modal-overlay">
         <div class="modal-content glass-card">
             <div class="modal-header">
                 <h3>✨ Umpan Balik & Saran AI</h3>
-                <button id="close-modal-btn">&times;</button>
+                <button class="close-modal-btn">&times;</button>
             </div>
             <div id="modal-body">
-                <div id="modal-loader" class="modal-loader">
+                <div class="modal-loader">
                     <div class="spinner"></div>
                     <p>AI sedang menganalisis performa Anda...</p>
                 </div>
-                <div id="modal-response"></div>
+                <div class="modal-response"></div>
             </div>
         </div>
     </div>
+    
+    <div id="ai-planner-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>🚀 Jelajahi Potensi Akademik</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div id="planner-modal-body">
+                <div class="planner-options">
+                    <button id="get-study-plan-btn" class="planner-btn">
+                        Buat Rencana Belajar
+                        <span>Fokus pada perbaikan nilai</span>
+                    </button>
+                    <button id="get-career-suggestion-btn" class="planner-btn">
+                        Dapatkan Saran Karir
+                        <span>Berdasarkan kekuatan Anda</span>
+                    </button>
+                </div>
+                <div class="modal-loader" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Mohon tunggu sebentar...</p>
+                </div>
+                <div class="modal-response"></div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 </body>

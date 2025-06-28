@@ -335,22 +335,29 @@ input:focus, select:focus {
     color: var(--text-color-light);
     margin-top: 0.25rem;
 }
-.ai-feedback-btn {
-    width: 100%;
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
     margin-top: 1.5rem;
+}
+.ai-feedback-btn, .ai-planner-btn {
+    width: 100%;
     padding: 0.75rem;
-    background: linear-gradient(45deg, var(--accent-color), var(--accent-color-bright));
     color: white;
     border: none;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition-medium);
-    box-shadow: 0 4px 15px rgba(182, 37, 42, 0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
 }
-.ai-feedback-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(182, 37, 42, 0.4); }
+.ai-feedback-btn { background: linear-gradient(45deg, var(--accent-color), var(--accent-color-bright)); }
+.ai-planner-btn { background: linear-gradient(45deg, var(--text-color-dark), #34495e); }
+
+.ai-feedback-btn:hover, .ai-planner-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 .ai-feedback-btn .btn-text { transition: opacity 0.2s; }
 .ai-feedback-btn .btn-loader {
     position: absolute;
@@ -472,11 +479,25 @@ input:focus, select:focus {
 .modal-header h3 { margin: 0; }
 .modal-header button { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color-light); transition: var(--transition-fast); }
 .modal-header button:hover { transform: rotate(90deg); color: var(--error-color); }
-.modal-loader { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 0; }
-#modal-response { display: none; }
-#modal-response p { margin-bottom: 0.75rem; }
-#modal-response ul { list-style-position: inside; padding-left: 0.5rem; }
-#modal-response li { margin-bottom: 0.5rem; }
+.modal-loader { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 0; }
+.modal-response { display: none; }
+.modal-response p { margin-bottom: 0.75rem; }
+.modal-response ul { list-style-position: inside; padding-left: 0.5rem; }
+.modal-response li { margin-bottom: 0.5rem; }
+
+#planner-modal-body .planner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.planner-btn {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: rgba(230, 235, 245, 0.7);
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: var(--transition-fast);
+}
+.planner-btn:hover { background: white; border-color: var(--accent-color); color: var(--accent-color); }
+.planner-btn span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--text-color-light); margin-top: 0.25rem; }
 
 /* --- Footer --- */
 .app-footer {
@@ -501,4 +522,6 @@ input:focus, select:focus {
     .app-header { flex-direction: column; text-align: center; gap: 1rem; }
     .form-grid { grid-template-columns: 1fr; }
     .courses-list { grid-template-columns: 1fr; }
+    .result-actions { grid-template-columns: 1fr; }
+    #planner-modal-body .planner-options { grid-template-columns: 1fr; }
 }
