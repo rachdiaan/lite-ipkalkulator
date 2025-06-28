@@ -554,12 +554,3 @@ input:focus, select:focus {
     .result-actions { grid-template-columns: 1fr; }
     #planner-modal-body .planner-options { grid-template-columns: 1fr; }
 }
-@media (max-width: 480px) {
-    .app-header h1 { font-size: 1.5rem; }
-    .app-header p { font-size: 0.9rem; }
-    .glass-card { padding: 1.25rem; }
-    .form-grid { grid-template-columns: 1fr; }
-    .action-btn { font-size: 0.7rem; }
-    .course-name, .course-sks, .course-grade { font-size: 0.8rem; }
-    .ai-feedback-btn, .ai-planner-btn { font-size: 0.7rem; padding: 0.6rem; }
-}
