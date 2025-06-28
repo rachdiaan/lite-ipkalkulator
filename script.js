@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!s1Response.ok || !s2Response.ok) {
                 console.error('Gagal memuat satu atau lebih file kurikulum.csv');
-                return;
+                throw new Error("Gagal mengambil data kurikulum dari server.");
             }
             
             const [s1Text, s2Text] = await Promise.all([
@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (autoPlannerCard) {
                 autoPlannerCard.innerHTML = '<p class="error-message" style="color: red; text-align: center;">Gagal memuat data kurikulum. Pastikan Anda menjalankan aplikasi melalui server lokal.</p>';
             }
+            initializeApp(true); // Initialize with data loading failed
         }
     }
 
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Planner Functions ---
     const updatePlannerVisibility = () => {
+        if (!autoPlannerCard) return;
         autoPlannerCard.style.display = (programLevelSelect.value === 's1' || programLevelSelect.value === 's2') ? 'block' : 'none';
         populateMajors();
     };
@@ -90,8 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const level = programLevelSelect.value;
         const curriculumData = level === 's1' ? s1Curriculum : s2Curriculum;
         const majors = Object.keys(curriculumData);
-        autoMajorSelect.innerHTML = majors.map(major => `<option value="${major}">${major}</option>`).join('');
-        populateConcentrations();
+        if (autoMajorSelect) {
+            autoMajorSelect.innerHTML = majors.map(major => `<option value="${major}">${major}</option>`).join('');
+            populateConcentrations();
+        }
     };
     
     const populateConcentrations = () => {
@@ -102,11 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!major || !curriculumData[major]) return;
         const concentrations = Object.keys(curriculumData[major]);
         
-        if (concentrations.length === 1 && concentrations[0] === 'Reguler') {
-             concentrationWrapper.style.display = 'none';
-        } else {
-             concentrationWrapper.style.display = 'block';
-             autoConcentrationSelect.innerHTML = concentrations.map(c => `<option value="${c}">${c}</option>`).join('');
+        if (concentrationWrapper) {
+            if (concentrations.length === 1 && concentrations[0] === 'Reguler') {
+                 concentrationWrapper.style.display = 'none';
+            } else {
+                 concentrationWrapper.style.display = 'block';
+                 if(autoConcentrationSelect) autoConcentrationSelect.innerHTML = concentrations.map(c => `<option value="${c}">${c}</option>`).join('');
+            }
         }
         populateSemesters();
     };
@@ -115,11 +121,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const level = programLevelSelect.value;
         const curriculumData = level === 's1' ? s1Curriculum : s2Curriculum;
         const major = autoMajorSelect.value;
-        const concentration = autoConcentrationSelect.value || Object.keys(curriculumData[major])[0];
+        const concentration = autoConcentrationSelect.value || (curriculumData[major] ? Object.keys(curriculumData[major])[0] : null);
         
-        if (!major || !concentration || !curriculumData[major][concentration]) return;
+        if (!major || !concentration || !curriculumData[major]?.[concentration]) return;
         const semesters = Object.keys(curriculumData[major][concentration]);
-        autoSemesterSelect.innerHTML = semesters.map(s => `<option value="${s}">${s}</option>`).join('');
+        if(autoSemesterSelect) autoSemesterSelect.innerHTML = semesters.map(s => `<option value="${s}">${s}</option>`).join('');
     };
 
     const fillCourses = () => {
@@ -130,11 +136,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const semester = autoSemesterSelect.value;
         const coursesToFill = curriculumData[major]?.[concentration]?.[semester];
         
-        coursesList.innerHTML = ''; // Clear existing courses
         if (coursesToFill) {
+            coursesList.innerHTML = ''; // Clear existing courses
             coursesToFill.forEach(course => coursesList.appendChild(createCourseRow(course)));
+            calculateGPA();
+        } else {
+            alert('Kurikulum untuk pilihan ini tidak ditemukan.');
         }
-        calculateGPA();
     };
 
 
@@ -153,18 +161,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // --- Event Listeners ---
     function initializeEventListeners() {
-        coursesList.addEventListener('input', calculateGPA);
-        addCourseBtn.addEventListener('click', addCourse);
-        programLevelSelect.addEventListener('change', () => {
+        if(coursesList) coursesList.addEventListener('input', calculateGPA);
+        if(addCourseBtn) addCourseBtn.addEventListener('click', addCourse);
+        if(programLevelSelect) programLevelSelect.addEventListener('change', () => {
             updatePlannerVisibility();
             document.querySelectorAll('.predicate-table').forEach(t => t.style.display = 'none');
-            document.getElementById(`predicate-${programLevelSelect.value}`).style.display = 'block';
+            const predicateTable = document.getElementById(`predicate-${programLevelSelect.value}`);
+            if (predicateTable) predicateTable.style.display = 'block';
             calculateGPA();
             checkEnglishScore();
         });
-        englishScoreInput.addEventListener('input', checkEnglishScore);
-        downloadTemplateBtn.addEventListener('click', downloadTemplate);
-        uploadSpreadsheetInput.addEventListener('change', handleFileUpload);
+        if(englishScoreInput) englishScoreInput.addEventListener('input', checkEnglishScore);
+        if(downloadTemplateBtn) downloadTemplateBtn.addEventListener('click', downloadTemplate);
+        if(uploadSpreadsheetInput) uploadSpreadsheetInput.addEventListener('change', handleFileUpload);
         
         allModals.forEach(m => {
             const closeBtn = m.querySelector('.close-modal-btn');
@@ -173,29 +182,87 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        document.getElementById('get-ai-feedback-btn').addEventListener('click', async (e) => { const btn = e.currentTarget; btn.classList.add('loading'); btn.disabled = true; openModal(feedbackModal); const studentName = document.getElementById('student-name').value; const studentNIM = document.getElementById('student-nim').value; const gpa = gpaResultEl.textContent; const coursesData = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => { const name = row.querySelector('.course-name').value; const sks = row.querySelector('.course-sks').value; const grade = row.querySelector('.course-grade').value; return (name && sks && grade) ? `- ${name} (${sks} SKS): Nilai ${grade}` : null; }).filter(Boolean); if (coursesData.length === 0) {  const responseDiv = feedbackModal.querySelector('.modal-response'); responseDiv.innerHTML = '<p>Silakan isi setidaknya satu mata kuliah lengkap untuk mendapatkan umpan balik.</p>'; feedbackModal.querySelector('.modal-loader').style.display = 'none'; responseDiv.style.display = 'block';  btn.classList.remove('loading'); btn.disabled = false; return;  } const prompt = `Anda adalah seorang konselor akademik yang positif dan memotivasi di Telkom University. Seorang mahasiswa meminta umpan balik tentang performa akademiknya.\n\nData Mahasiswa:\nNama: ${studentName || "Mahasiswa"}\nNIM: ${studentNIM || "Tidak ada"}\nIPK saat ini: ${gpa}\nMata Kuliah yang telah dinilai:\n${coursesData.join('\n')}\n\nTugas Anda:\n1. Sapa mahasiswa dengan namanya. Berikan paragraf pembuka yang singkat & positif.\n2. Berikan 3-4 poin saran belajar yang spesifik dan praktis.\n3. Berikan paragraf penutup yang memberi semangat.\n\nJawab dalam format HTML sederhana (gunakan <p>, <ul>, dan <li>) dan dalam Bahasa Indonesia.`; await callGeminiAPI(prompt, feedbackModal); btn.classList.remove('loading'); btn.disabled = false; });
-        document.getElementById('open-planner-modal-btn').addEventListener('click', () => { plannerModal.querySelector('.planner-options').style.display = 'grid'; plannerModal.querySelector('.modal-response').innerHTML = ''; plannerModal.querySelector('.modal-response').style.display = 'none'; openModal(plannerModal); });
-        document.getElementById('get-study-plan-btn').addEventListener('click', async () => { const courses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && c.grade); const prompt = `Anda adalah seorang tutor akademik. Buatkan rencana belajar mingguan dalam format tabel HTML untuk mahasiswa berdasarkan daftar mata kuliah ini:\n\n${courses.map(c => `- ${c.name} (Nilai: ${c.grade})`).join('\n')}\n\nFokuskan lebih banyak waktu pada mata kuliah dengan nilai C, D, atau E. Buat jadwal dari Senin hingga Jumat, dengan sesi pagi, siang, dan sore. Berikan juga tips singkat di akhir.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
-        document.getElementById('get-career-suggestion-btn').addEventListener('click', async () => { const highGradeCourses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && ['A', 'AB', 'B'].includes(c.grade)); if (highGradeCourses.length === 0) { alert("Isi setidaknya satu mata kuliah dengan nilai A, AB, atau B untuk mendapatkan saran karir."); return; } const prompt = `Anda adalah seorang konselor karir. Berdasarkan daftar mata kuliah dengan nilai terbaik ini:\n\n${highGradeCourses.map(c => `- ${c.name}`).join('\n')}\n\nBerikan 3 saran jalur karir atau spesialisasi yang relevan. Untuk setiap saran, berikan penjelasan singkat (2-3 kalimat) mengapa mata kuliah tersebut mendukung jalur karir itu. Gunakan format HTML dengan <h3> untuk judul karir dan <p> untuk penjelasan.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
+        const feedbackBtn = document.getElementById('get-ai-feedback-btn');
+        if (feedbackBtn) {
+            feedbackBtn.addEventListener('click', async (e) => {
+                const btn = e.currentTarget;
+                btn.classList.add('loading');
+                btn.disabled = true;
+                openModal(feedbackModal);
+                const studentName = document.getElementById('student-name').value;
+                const studentNIM = document.getElementById('student-nim').value;
+                const gpa = gpaResultEl.textContent;
+                const coursesData = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => { const name = row.querySelector('.course-name').value; const sks = row.querySelector('.course-sks').value; const grade = row.querySelector('.course-grade').value; return (name && sks && grade) ? `- ${name} (${sks} SKS): Nilai ${grade}` : null; }).filter(Boolean);
+                if (coursesData.length === 0) {
+                    const responseDiv = feedbackModal.querySelector('.modal-response');
+                    responseDiv.innerHTML = '<p>Silakan isi setidaknya satu mata kuliah lengkap untuk mendapatkan umpan balik.</p>';
+                    feedbackModal.querySelector('.modal-loader').style.display = 'none';
+                    responseDiv.style.display = 'block';
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    return;
+                }
+                const prompt = `Anda adalah seorang konselor akademik yang positif dan memotivasi di Telkom University. Seorang mahasiswa meminta umpan balik tentang performa akademiknya.\n\nData Mahasiswa:\nNama: ${studentName || "Mahasiswa"}\nNIM: ${studentNIM || "Tidak ada"}\nIPK saat ini: ${gpa}\nMata Kuliah yang telah dinilai:\n${coursesData.join('\n')}\n\nTugas Anda:\n1. Sapa mahasiswa dengan namanya. Berikan paragraf pembuka yang singkat & positif.\n2. Berikan 3-4 poin saran belajar yang spesifik dan praktis.\n3. Berikan paragraf penutup yang memberi semangat.\n\nJawab dalam format HTML sederhana (gunakan <p>, <ul>, dan <li>) dan dalam Bahasa Indonesia.`;
+                await callGeminiAPI(prompt, feedbackModal);
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            });
+        }
         
-        // Planner Listeners
-        autoMajorSelect.addEventListener('change', populateConcentrations);
-        autoConcentrationSelect.addEventListener('change', populateSemesters);
-        fillCoursesBtn.addEventListener('click', fillCourses);
+        const openPlannerBtn = document.getElementById('open-planner-modal-btn');
+        if (openPlannerBtn) {
+            openPlannerBtn.addEventListener('click', () => {
+                plannerModal.querySelector('.planner-options').style.display = 'grid';
+                plannerModal.querySelector('.modal-response').innerHTML = '';
+                plannerModal.querySelector('.modal-response').style.display = 'none';
+                openModal(plannerModal);
+            });
+        }
+        
+        const studyPlanBtn = document.getElementById('get-study-plan-btn');
+        if(studyPlanBtn) {
+            studyPlanBtn.addEventListener('click', async () => {
+                const courses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && c.grade);
+                const prompt = `Anda adalah seorang tutor akademik. Buatkan rencana belajar mingguan dalam format tabel HTML untuk mahasiswa berdasarkan daftar mata kuliah ini:\n\n${courses.map(c => `- ${c.name} (Nilai: ${c.grade})`).join('\n')}\n\nFokuskan lebih banyak waktu pada mata kuliah dengan nilai C, D, atau E. Buat jadwal dari Senin hingga Jumat, dengan sesi pagi, siang, dan sore. Berikan juga tips singkat di akhir.`;
+                plannerModal.querySelector('.planner-options').style.display = 'none';
+                await callGeminiAPI(prompt, plannerModal);
+            });
+        }
+
+        const careerSuggBtn = document.getElementById('get-career-suggestion-btn');
+        if(careerSuggBtn){
+            careerSuggBtn.addEventListener('click', async () => {
+                const highGradeCourses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && ['A', 'AB', 'B'].includes(c.grade));
+                if (highGradeCourses.length === 0) {
+                    alert("Isi setidaknya satu mata kuliah dengan nilai A, AB, atau B untuk mendapatkan saran karir.");
+                    return;
+                }
+                const prompt = `Anda adalah seorang konselor karir. Berdasarkan daftar mata kuliah dengan nilai terbaik ini:\n\n${highGradeCourses.map(c => `- ${c.name}`).join('\n')}\n\nBerikan 3 saran jalur karir atau spesialisasi yang relevan. Untuk setiap saran, berikan penjelasan singkat (2-3 kalimat) mengapa mata kuliah tersebut mendukung jalur karir itu. Gunakan format HTML dengan <h3> untuk judul karir dan <p> untuk penjelasan.`;
+                plannerModal.querySelector('.planner-options').style.display = 'none';
+                await callGeminiAPI(prompt, plannerModal);
+            });
+        }
+        
+        if(autoMajorSelect) autoMajorSelect.addEventListener('change', populateConcentrations);
+        if(autoConcentrationSelect) autoConcentrationSelect.addEventListener('change', populateSemesters);
+        if(fillCoursesBtn) fillCoursesBtn.addEventListener('click', fillCourses);
     }
     
-    function initializeApp() {
+    function initializeApp(dataLoadFailed = false) {
         window.addEventListener('load', () => document.body.classList.remove('loading'));
         
         initializeEventListeners();
         
-        if (initialCourses.length > 0) {
-            initialCourses.forEach(course => coursesList.appendChild(createCourseRow(course)));
-        } else {
-            addCourse();
+        addCourse();
+        
+        const firstPredicateTable = document.querySelector('.predicate-table');
+        if (firstPredicateTable) {
+            firstPredicateTable.style.display = 'block';
         }
-        document.querySelector('.predicate-table').style.display = 'block';
-        updatePlannerVisibility(); 
+
+        if (!dataLoadFailed) {
+            updatePlannerVisibility();
+        }
         calculateGPA();
     }
     
