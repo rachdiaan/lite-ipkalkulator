@@ -53,37 +53,29 @@
                     </div>
                 </div>
 
-                <!-- S2 Study Plan Section -->
-                <div id="s2-planner-card" class="info-card glass-card" style="display: none;">
-                    <h2>Rencana Studi S2 (Otomatis)</h2>
-                    <div class="s2-planner-grid">
+                <!-- Auto-fill Planner Section -->
+                <div id="auto-planner-card" class="info-card glass-card">
+                    <h2>Rencana Studi Otomatis</h2>
+                    <div class="planner-grid">
                         <div>
-                            <label for="s2-major">Program Studi</label>
-                            <select id="s2-major">
-                                <option value="manajemen">S2 Manajemen</option>
-                                <option value="elektro">S2 Teknik Elektro</option>
-                                <option value="informatika">S2 Informatika</option>
-                                <option value="cybersecurity">S2 Cybersecurity & Digital Forensics</option>
-                                <option value="industri">S2 Teknik Industri</option>
-                                <option value="akuntansi">S2 Akuntansi</option>
-                                <option value="komunikasi">S2 Ilmu Komunikasi</option>
-                                <option value="administrasi_bisnis">S2 Administrasi Bisnis</option>
-                                <option value="desain">S2 Desain</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="s2-concentration">Jalur / Konsentrasi</label>
-                            <select id="s2-concentration">
+                            <label for="auto-major">Program Studi</label>
+                            <select id="auto-major">
                                 <!-- Options will be populated by JS -->
                             </select>
                         </div>
-                         <div class="s2-semester-selector">
-                            <label for="s2-semester">Semester</label>
-                            <select id="s2-semester">
+                        <div id="concentration-wrapper">
+                            <label for="auto-concentration">Jalur / Konsentrasi</label>
+                            <select id="auto-concentration">
                                 <!-- Options will be populated by JS -->
                             </select>
                         </div>
-                        <button id="s2-fill-courses-btn" class="s2-fill-btn">Isi Mata Kuliah</button>
+                         <div class="semester-selector">
+                            <label for="auto-semester">Semester</label>
+                            <select id="auto-semester">
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                        <button id="fill-courses-btn" class="fill-btn">Isi Mata Kuliah</button>
                     </div>
                 </div>
 

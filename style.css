@@ -149,14 +149,14 @@ body.loading .main-container > * {
     gap: 1.25rem;
 }
 
-.s2-planner-grid {
+.planner-grid, .s2-planner-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     align-items: flex-end;
 }
-.s2-semester-selector { grid-column: 1 / 2; }
-.s2-fill-btn {
+.semester-selector, .s2-semester-selector { grid-column: 1 / 2; }
+.fill-btn, .s2-fill-btn {
     grid-column: 2 / 3;
     background-color: var(--accent-color);
     color: white;
@@ -167,7 +167,7 @@ body.loading .main-container > * {
     cursor: pointer;
     transition: var(--transition-fast);
 }
-.s2-fill-btn:hover { background-color: var(--accent-color-bright); }
+.fill-btn:hover, .s2-fill-btn:hover { background-color: var(--accent-color-bright); }
 
 
 label {
