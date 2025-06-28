@@ -149,14 +149,14 @@ body.loading .main-container > * {
     gap: 1.25rem;
 }
 
-.planner-grid, .s2-planner-grid {
+.planner-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     align-items: flex-end;
 }
-.semester-selector, .s2-semester-selector { grid-column: 1 / 2; }
-.fill-btn, .s2-fill-btn {
+.semester-selector { grid-column: 1 / 2; }
+.fill-btn {
     grid-column: 2 / 3;
     background-color: var(--accent-color);
     color: white;
@@ -167,7 +167,7 @@ body.loading .main-container > * {
     cursor: pointer;
     transition: var(--transition-fast);
 }
-.fill-btn:hover, .s2-fill-btn:hover { background-color: var(--accent-color-bright); }
+.fill-btn:hover { background-color: var(--accent-color-bright); }
 
 
 label {
@@ -548,7 +548,7 @@ input:focus, select:focus {
     .main-container { padding: 0 1rem; margin: 1rem auto; }
     .app-header { flex-direction: column; text-align: center; gap: 1rem; }
     .form-grid { grid-template-columns: 1fr; }
-    .s2-planner-grid { grid-template-columns: 1fr; }
+    .planner-grid { grid-template-columns: 1fr; }
     .fill-btn { grid-column: auto; }
     .courses-list { grid-template-columns: 1fr; }
     .result-actions { grid-template-columns: 1fr; }

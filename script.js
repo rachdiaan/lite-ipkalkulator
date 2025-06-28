@@ -29,50 +29,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Data Loading ---
     async function loadCurriculumData() {
         try {
-            const response = await fetch('kurikulum.csv');
-            if (!response.ok) {
-                console.error('Gagal memuat file kurikulum.csv');
+            const s1Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_D3S1.csv`;
+            const s2Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_s2.csv`;
+
+            const [s1Response, s2Response] = await Promise.all([
+                fetch(s1Url),
+                fetch(s2Url)
+            ]);
+
+            if (!s1Response.ok || !s2Response.ok) {
+                console.error('Gagal memuat satu atau lebih file kurikulum.csv');
                 return;
             }
-            const csvText = await response.text();
-            parseCurriculumCSV(csvText);
-            initializeApp(); // Initialize app after data is loaded
+            
+            const [s1Text, s2Text] = await Promise.all([
+                s1Response.text(),
+                s2Response.text()
+            ]);
+
+            parseCurriculumCSV(s1Text, 's1');
+            parseCurriculumCSV(s2Text, 's2');
+            
+            initializeApp(); // Initialize app after all data is loaded
         } catch (error) {
             console.error('Error saat mengambil data kurikulum:', error);
-            // Fallback or show an error message to the user
-            const coursesCard = document.querySelector('.courses-card');
-            if (coursesCard) {
-                coursesCard.insertAdjacentHTML('afterbegin', '<p class="error-message">Gagal memuat data kurikulum. Fitur Rencana Studi Otomatis mungkin tidak berfungsi.</p>');
+            if (autoPlannerCard) {
+                autoPlannerCard.innerHTML = '<p class="error-message" style="color: red; text-align: center;">Gagal memuat data kurikulum. Pastikan Anda menjalankan aplikasi melalui server lokal.</p>';
             }
         }
     }
 
-    function parseCurriculumCSV(text) {
-        const lines = text.split(/\r?\n/).slice(1); // Skip header
-        const tempS1Data = {};
-        const tempS2Data = {};
+    function parseCurriculumCSV(text, level) {
+        const lines = text.split(/\r?\n/).slice(1);
+        const targetData = level === 's1' ? s1Curriculum : s2Curriculum;
 
         lines.forEach(line => {
             if (!line.trim()) return;
             const columns = line.split(',').map(col => col.replace(/"/g, '').trim());
-            const [jenjang, prodi, konsentrasi, semester, matkul, sks] = columns;
+            const [prodi, konsentrasi, semester, matkul, sks] = columns;
+            
+            if (!prodi || !konsentrasi || !semester || !matkul || !sks) return;
 
             const courseData = { name: matkul, sks: parseInt(sks, 10) };
-
-            if (jenjang.startsWith('D') || jenjang.startsWith('S1')) {
-                if (!tempS1Data[prodi]) tempS1Data[prodi] = {};
-                if (!tempS1Data[prodi][konsentrasi]) tempS1Data[prodi][konsentrasi] = {};
-                if (!tempS1Data[prodi][konsentrasi][semester]) tempS1Data[prodi][konsentrasi][semester] = [];
-                tempS1Data[prodi][konsentrasi][semester].push(courseData);
-            } else if (jenjang.startsWith('S2')) {
-                 if (!tempS2Data[prodi]) tempS2Data[prodi] = {};
-                if (!tempS2Data[prodi][konsentrasi]) tempS2Data[prodi][konsentrasi] = {};
-                if (!tempS2Data[prodi][konsentrasi][semester]) tempS2Data[prodi][konsentrasi][semester] = [];
-                tempS2Data[prodi][konsentrasi][semester].push(courseData);
-            }
+            
+            if (!targetData[prodi]) targetData[prodi] = {};
+            if (!targetData[prodi][konsentrasi]) targetData[prodi][konsentrasi] = {};
+            if (!targetData[prodi][konsentrasi][semester]) targetData[prodi][konsentrasi][semester] = [];
+            targetData[prodi][konsentrasi][semester].push(courseData);
         });
-        s1Curriculum = tempS1Data;
-        s2Curriculum = tempS2Data;
     }
 
 
@@ -124,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const major = autoMajorSelect.value;
         const concentration = autoConcentrationSelect.value || Object.keys(curriculumData[major])[0];
         const semester = autoSemesterSelect.value;
-        const coursesToFill = curriculumData[major][concentration][semester];
+        const coursesToFill = curriculumData[major]?.[concentration]?.[semester];
         
         coursesList.innerHTML = ''; // Clear existing courses
         if (coursesToFill) {
@@ -174,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('get-study-plan-btn').addEventListener('click', async () => { const courses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && c.grade); const prompt = `Anda adalah seorang tutor akademik. Buatkan rencana belajar mingguan dalam format tabel HTML untuk mahasiswa berdasarkan daftar mata kuliah ini:\n\n${courses.map(c => `- ${c.name} (Nilai: ${c.grade})`).join('\n')}\n\nFokuskan lebih banyak waktu pada mata kuliah dengan nilai C, D, atau E. Buat jadwal dari Senin hingga Jumat, dengan sesi pagi, siang, dan sore. Berikan juga tips singkat di akhir.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
         document.getElementById('get-career-suggestion-btn').addEventListener('click', async () => { const highGradeCourses = Array.from(coursesList.querySelectorAll('.course-card-item')).map(row => ({ name: row.querySelector('.course-name').value, grade: row.querySelector('.course-grade').value, })).filter(c => c.name && ['A', 'AB', 'B'].includes(c.grade)); if (highGradeCourses.length === 0) { alert("Isi setidaknya satu mata kuliah dengan nilai A, AB, atau B untuk mendapatkan saran karir."); return; } const prompt = `Anda adalah seorang konselor karir. Berdasarkan daftar mata kuliah dengan nilai terbaik ini:\n\n${highGradeCourses.map(c => `- ${c.name}`).join('\n')}\n\nBerikan 3 saran jalur karir atau spesialisasi yang relevan. Untuk setiap saran, berikan penjelasan singkat (2-3 kalimat) mengapa mata kuliah tersebut mendukung jalur karir itu. Gunakan format HTML dengan <h3> untuk judul karir dan <p> untuk penjelasan.`; plannerModal.querySelector('.planner-options').style.display = 'none'; await callGeminiAPI(prompt, plannerModal); });
         
-        // S2 Planner Listeners
+        // Planner Listeners
         autoMajorSelect.addEventListener('change', populateConcentrations);
         autoConcentrationSelect.addEventListener('change', populateSemesters);
         fillCoursesBtn.addEventListener('click', fillCourses);
@@ -191,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addCourse();
         }
         document.querySelector('.predicate-table').style.display = 'block';
-        updatePlannerVisibility();
+        updatePlannerVisibility(); 
         calculateGPA();
     }
     
