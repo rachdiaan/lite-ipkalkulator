@@ -386,26 +386,49 @@ input:focus, select:focus {
 .conversion-grid > div { background: rgba(230, 235, 245, 0.7); padding: 0.5rem; border-radius: 8px; }
 .conversion-grid p { font-weight: 600; }
 .conversion-grid span { font-size: 0.75rem; color: var(--text-color-light); }
-.predicate-table h4 { font-weight: 600; margin-bottom: 0.5rem; }
-.predicate-table table { width: 100%; font-size: 0.8rem; }
+
+/* --- Updated Predicate Styles --- */
+.predicate-table h4 { font-weight: 600; margin-bottom: 0.75rem; }
+.predicate-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+.predicate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(230, 235, 245, 0.7);
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+.predicate-name {
+    font-weight: 500;
+    color: var(--text-color-dark);
+}
+.predicate-ipk {
+    font-weight: 500;
+    color: var(--text-color-light);
+}
 
 /* --- Modal --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none; /* Changed from flex */
+    display: none; 
     align-items: center;
     justify-content: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s;
+    transition: opacity 0.4s ease, visibility 0s 0.4s;
 }
 .modal-overlay.active {
-    display: flex;
     opacity: 1;
     visibility: visible;
+    transition-delay: 0s;
 }
 .modal-content {
     position: relative;
