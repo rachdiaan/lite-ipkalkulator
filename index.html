@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Akademik Modern - Telkom University</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-shapes"></div>
+
+    <main class="main-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <img class="logo" src="https://smb.telkomuniversity.ac.id/wp-content/uploads/2023/03/Logo-Utama-Telkom-University.png" alt="Logo Universitas Telkom" onerror="this.onerror=null;this.style.display='none';">
+            <div class="header-text">
+                <h1>
+                    IP-Kalkulator</h1>
+                <p>Hitung dan Rencanakan Akademik sambil disemangatin AI!😱 </p>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column: Inputs -->
+            <section class="input-section">
+                <div class="info-card glass-card">
+                    <h2>Informasi Mahasiswa</h2>
+                    <div class="form-grid">
+                        <div>
+                            <label for="student-name">Nama Mahasiswa</label>
+                            <input type="text" id="student-name" placeholder="Masukkan nama Anda">
+                        </div>
+                        <div>
+                            <label for="student-nim">NIM</label>
+                            <input type="text" id="student-nim" placeholder="Masukkan NIM Anda">
+                        </div>
+                        <div>
+                            <label for="program-level">Jenjang Pendidikan</label>
+                            <select id="program-level">
+                                <option value="s1" selected>D3/S1/S1 Terapan</option>
+                                <option value="s2">S2/S2 Terapan</option>
+                                <option value="s3">S3/S3 Terapan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="english-score">Skor TOEFL/EPrT</label>
+                            <input type="number" id="english-score" placeholder="Contoh: 450">
+                            <div id="english-score-result" class="validation-message"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="courses-card glass-card">
+                    <div class="card-header">
+                        <h2>Input Mata Kuliah</h2>
+                        <div class="card-actions">
+                            <a href="#" id="download-template-btn" class="action-btn" title="Unduh Template CSV">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                <span>Unduh Template</span>
+                            </a>
+                            <label for="upload-spreadsheet" class="action-btn" title="Unggah File CSV">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                <span>Unggah CSV</span>
+                                <input type="file" id="upload-spreadsheet" accept=".csv">
+                            </label>
+                        </div>
+                    </div>
+                    <div id="courses-list" class="courses-list">
+                        <!-- Course cards will be injected here -->
+                    </div>
+                    <button id="add-course-btn" class="add-course-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Tambah Mata Kuliah</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Column: Results & Info -->
+            <aside class="sidebar-section">
+                <div class="result-card glass-card">
+                    <h3>Hasil Perhitungan</h3>
+                    <p id="result" class="gpa-result">0.00</p>
+                    <p id="predicate-result" class="predicate-result"></p>
+                    <p id="summary" class="summary-text">Silakan isi mata kuliah Anda.</p>
+                    <button id="get-ai-feedback-btn" class="ai-feedback-btn">
+                        ✨ Dapatkan Umpan Balik & Saran AI
+                    </button>
+                </div>
+
+                <div class="info-tabs glass-card">
+                    <div class="tab-header">
+                        <button class="tab-link active" data-tab="tab-1">Konversi Nilai</button>
+                        <button class="tab-link" data-tab="tab-2">Predikat Lulus</button>
+                    </div>
+                    <div id="tab-1" class="tab-content active">
+                         <div class="conversion-grid">
+                            <div><p>A</p><span>> 85</span></div>
+                            <div><p>AB</p><span>75-85</span></div>
+                            <div><p>B</p><span>65-75</span></div>
+                            <div><p>BC</p><span>60-65</span></div>
+                            <div><p>C</p><span>50-60</span></div>
+                            <div><p>D</p><span>40-50</span></div>
+                            <div><p>E</p><span>≤ 40</span></div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-content">
+                        <div id="predicate-s1" class="predicate-table">
+                            <h4>D3/S1/S1 Terapan</h4>
+                            <table><thead><tr><th>Predikat</th><th>IPK</th></tr></thead><tbody><tr><td>Sempurna</td><td>3.91 – 4.00</td></tr><tr><td>Pujian</td><td>3.51 – 3.90</td></tr><tr><td>Sangat Memuaskan</td><td>3.01 – 3.50</td></tr><tr><td>Memuaskan</td><td>2.76 – 3.00</td></tr></tbody></table>
+                        </div>
+                        <div id="predicate-s2" class="predicate-table" style="display:none;">
+                            <h4>S2/S2 Terapan</h4>
+                            <table><thead><tr><th>Predikat</th><th>IPK</th></tr></thead><tbody><tr><td>Sempurna</td><td>3.96 – 4.00</td></tr><tr><td>Pujian</td><td>3.76 – 3.95</td></tr><tr><td>Sangat Memuaskan</td><td>3.51 – 3.75</td></tr><tr><td>Memuaskan</td><td>3.26 – 3.50</td></tr></tbody></table>
+                        </div>
+                        <div id="predicate-s3" class="predicate-table" style="display:none;">
+                            <h4>S3/S3 Terapan</h4>
+                             <table><thead><tr><th>Predikat</th><th>IPK</th></tr></thead><tbody><tr><td>Sempurna</td><td>3.96 – 4.00</td></tr><tr><td>Pujian</td><td>3.76 – 3.95</td></tr><tr><td>Sangat Memuaskan</td><td>3.51 – 3.75</td></tr><tr><td>Memuaskan</td><td>3.26 – 3.50</td></tr></tbody></table>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        © 2025. Created with ❤️ by Rachdian
+    </footer>
+
+    <!-- AI Feedback Modal -->
+    <div id="ai-feedback-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>✨ Umpan Balik & Saran AI</h3>
+                <button id="close-modal-btn">&times;</button>
+            </div>
+            <div id="modal-body">
+                <div id="modal-loader" class="modal-loader">
+                    <div class="spinner"></div>
+                    <p>AI sedang menganalisis performa Anda...</p>
+                </div>
+                <div id="modal-response"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
