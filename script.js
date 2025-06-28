@@ -186,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModal = () => { modal.classList.remove('active'); }
 
     const getAIFeedback = async () => {
+        getAIFeedbackBtn.classList.add('loading');
+        getAIFeedbackBtn.disabled = true;
         openModal();
         modalLoader.style.display = 'flex';
         modalResponse.style.display = 'none';
@@ -204,6 +206,8 @@ document.addEventListener('DOMContentLoaded', function() {
             modalResponse.innerHTML = '<p>Silakan isi setidaknya satu mata kuliah lengkap untuk mendapatkan umpan balik.</p>';
             modalLoader.style.display = 'none';
             modalResponse.style.display = 'block'; 
+            getAIFeedbackBtn.classList.remove('loading');
+            getAIFeedbackBtn.disabled = false;
             return; 
         }
 
@@ -216,15 +220,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
             });
-            if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error.message || `API Error: ${response.statusText}`);
+            }
             const result = await response.json();
             modalResponse.innerHTML = result.candidates[0].content.parts[0].text;
         } catch (error) {
             console.error("AI Feedback Error:", error);
-            modalResponse.innerHTML = `<p style="color:var(--error-color)">Maaf, terjadi kesalahan saat mengambil saran dari AI. Silakan coba lagi nanti.</p>`;
+            modalResponse.innerHTML = `<p style="color:var(--error-color)"><strong>Gagal Terhubung ke AI.</strong></p><p style="font-size:0.8rem; color:var(--text-color-light)">Ini bisa terjadi jika Anda menjalankan file ini secara langsung di browser. Coba jalankan melalui server lokal. Jika masalah berlanjut, mungkin ada kendala pada layanan AI.</p>`;
         } finally {
             modalLoader.style.display = 'none';
             modalResponse.style.display = 'block';
+            getAIFeedbackBtn.classList.remove('loading');
+            getAIFeedbackBtn.disabled = false;
         }
     };
     

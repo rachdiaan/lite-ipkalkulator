@@ -57,7 +57,7 @@ body.loading .main-container > * {
 .background-shapes::before {
     width: 350px;
     height: 350px;
-    background: #ffdde1;
+    background: #ffafbd;
     top: -100px;
     left: -150px;
     animation: move-one 20s infinite alternate ease-in-out;
@@ -259,7 +259,7 @@ input:focus, select:focus {
 .course-details {
     display: grid;
     grid-template-columns: 80px 1fr;
-    gap: 1rem; /* Increased spacing */
+    gap: 1rem;
 }
 
 .course-sks, .course-grade {
@@ -343,8 +343,33 @@ input:focus, select:focus {
     cursor: pointer;
     transition: var(--transition-medium);
     box-shadow: 0 4px 15px rgba(182, 37, 42, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 .ai-feedback-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(182, 37, 42, 0.4); }
+.ai-feedback-btn .btn-text { transition: opacity 0.2s; }
+.ai-feedback-btn .btn-loader {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background-color: var(--accent-color);
+}
+.ai-feedback-btn.loading .btn-text { opacity: 0; }
+.ai-feedback-btn.loading .btn-loader { opacity: 1; }
+.ai-feedback-btn .btn-loader::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
 
 /* --- Info Tabs --- */
 .tab-header {
@@ -387,7 +412,6 @@ input:focus, select:focus {
 .conversion-grid p { font-weight: 600; }
 .conversion-grid span { font-size: 0.75rem; color: var(--text-color-light); }
 
-/* --- Updated Predicate Styles --- */
 .predicate-table h4 { font-weight: 600; margin-bottom: 0.75rem; }
 .predicate-grid {
     display: grid;
@@ -417,7 +441,7 @@ input:focus, select:focus {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none; 
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 1000;
