@@ -549,7 +549,7 @@ input:focus, select:focus {
     .app-header { flex-direction: column; text-align: center; gap: 1rem; }
     .form-grid { grid-template-columns: 1fr; }
     .s2-planner-grid { grid-template-columns: 1fr; }
-    .s2-fill-btn { grid-column: auto; }
+    .fill-btn { grid-column: auto; }
     .courses-list { grid-template-columns: 1fr; }
     .result-actions { grid-template-columns: 1fr; }
     #planner-modal-body .planner-options { grid-template-columns: 1fr; }
