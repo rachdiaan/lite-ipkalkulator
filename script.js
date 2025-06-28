@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const feedbackModal = document.getElementById('ai-feedback-modal');
     const plannerModal = document.getElementById('ai-planner-modal');
     const allModals = document.querySelectorAll('.modal-overlay');
+    const closeModalButtons = document.querySelectorAll('.close-modal-btn');
 
     // --- S2 Planner Functions ---
     const populateS2Concentrations = () => {
