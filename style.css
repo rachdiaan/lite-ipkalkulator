@@ -358,7 +358,7 @@ input:focus, select:focus {
 }
 .result-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
     margin-top: 1.5rem;
 }
@@ -376,8 +376,8 @@ input:focus, select:focus {
     overflow: hidden;
     font-size: 0.8rem;
 }
-.ai-feedback-btn { background: linear-gradient(45deg, var(--accent-color), var(--accent-color-bright)); }
-.ai-planner-btn { background: linear-gradient(45deg, var(--text-color-dark), #34495e); }
+.ai-feedback-btn { background: linear-gradient(45deg, var(--accent-color), var(--accent-color-bright)); display: none; }
+.ai-planner-btn { background: linear-gradient(45deg, var(--text-color-dark), #34495e); display: none; }
 
 .ai-feedback-btn:hover, .ai-planner-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 .ai-feedback-btn .btn-text { transition: opacity 0.2s; }
