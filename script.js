@@ -25,12 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const feedbackModal = document.getElementById('ai-feedback-modal');
     const plannerModal = document.getElementById('ai-planner-modal');
     const allModals = document.querySelectorAll('.modal-overlay');
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
 
     // --- Data Loading ---
     async function loadCurriculumData() {
         try {
-            const s1Url = `https://drive.google.com/file/d/1vKC_mu3fe3meKUr2IDEM1j_GJCzVbg7J/view?usp=sharing`;
-            const s2Url = `https://drive.google.com/file/d/1ELaRAMRuxJK-Qyj4QEgOBklHSRWhjU-k/view?usp=sharing`;
+            const s1Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_D3S1.csv`;
+            const s2Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_s2.csv`;
 
             const [s1Response, s2Response] = await Promise.all([
                 fetch(s1Url),
@@ -181,9 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeBtn.addEventListener('click', () => closeModal(m));
             }
         });
-        
+
+        const tabLinks = document.querySelectorAll('.tab-link');
         tabLinks.forEach(link => {
             link.addEventListener('click', () => {
+                const tabContents = document.querySelectorAll('.tab-content');
                 tabLinks.forEach(l => l.classList.remove('active'));
                 tabContents.forEach(c => c.classList.remove('active'));
                 link.classList.add('active');
@@ -259,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function initializeApp(dataLoadFailed = false) {
-        window.addEventListener('load', () => document.body.classList.remove('loading'));
         
         initializeEventListeners();
         
@@ -274,6 +277,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePlannerVisibility();
         }
         calculateGPA();
+        
+        document.body.classList.remove('loading');
     }
     
     loadCurriculumData();
