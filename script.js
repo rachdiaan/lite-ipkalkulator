@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Data Loading ---
     async function loadCurriculumData() {
         try {
-            const s1Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_D3S1.csv`;
-            const s2Url = `https://raw.githubusercontent.com/rachdiaan/lite-ipkalkulator/main/kurikulum_s2.csv`;
+            const s1Url = `https://drive.google.com/file/d/1vKC_mu3fe3meKUr2IDEM1j_GJCzVbg7J/view?usp=sharing`;
+            const s2Url = `https://drive.google.com/file/d/1ELaRAMRuxJK-Qyj4QEgOBklHSRWhjU-k/view?usp=sharing`;
 
             const [s1Response, s2Response] = await Promise.all([
                 fetch(s1Url),
