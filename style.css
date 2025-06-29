@@ -203,6 +203,12 @@ input:focus, select:focus {
     min-height: 1rem;
 }
 
+.dynamic-field {
+    grid-column: 1 / -1;
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
 /* --- Courses Section --- */
 .input-section {
     display: flex;
